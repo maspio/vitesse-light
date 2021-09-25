@@ -1,21 +1,20 @@
 <template>
   <div>
-    Vitesse Light
-    <dark-toggle />
-    <div class="w-full"><Flicking></Flicking></div>
+    <page-section>
+      <dark-toggle />
+    </page-section>
+    <page-section>
+      <Slider></Slider>
+    </page-section>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import FlickingSync from "~/components/FlickingSync.vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  components: { FlickingSync },
   setup() {
-    return {};
+    return {}
   },
-});
+})
 </script>
-
-
