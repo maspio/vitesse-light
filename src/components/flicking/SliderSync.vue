@@ -41,7 +41,7 @@
 import { defineComponent, onMounted } from 'vue'
 import Flicking from '@egjs/vue3-flicking'
 import { Sync } from '@egjs/flicking-plugins'
-import { useSlider } from '../logic/slider'
+import { useSlider } from '../../logic/slider'
 
 export default defineComponent({
   components: {
