@@ -4,7 +4,7 @@
       <dark-toggle />
     </page-section>
     <page-section>
-      <SliderDemo></SliderDemo>
+      <SliderItemsDemo></SliderItemsDemo>
     </page-section>
   </div>
 </template>

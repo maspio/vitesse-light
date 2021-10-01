@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 // eslint-disable-next-line import/named
 import { ref, computed, Ref } from 'vue-demi'
@@ -41,21 +42,19 @@ export const useSlider = (opts: Opts = DefOpts) => {
   const isBusy = computed(() => [isMoving.value, isNavigating.value].some(f => !!f))
 
   // const currentPanel = computed(() => target.value?.currentPanel);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onMoveStart = (_e: any) => {
     isMoving.value = true
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onMoveEnd = (e: any) => {
     isMoving.value = false
   }
   const onNeedPanel = (e: any) => {
     const direction: 'PREV' | 'NEXT' = e.direction
-    console.log('onNeedPanel', { direction })
+    // console.log('onNeedPanel', { direction })
   }
   const onReachEdge = (e: any) => {
     const direction: 'PREV' | 'NEXT' = e.direction
-    console.log('onReachEdge', { direction })
+    // console.log('onReachEdge', { direction })
   }
   const onVisibleChange = (e: any) => {
     const visiblePanelsRaw: Array<any> = e.visiblePanels
@@ -65,13 +64,13 @@ export const useSlider = (opts: Opts = DefOpts) => {
       toggled: p._toggled as boolean,
       removed: p._removed as boolean,
     }))
-    console.log('onVisibleChange', { visiblePanels })
+    // console.log('onVisibleChange', { visiblePanels })
   }
   const onSelect = (e: any) => {
     const direction: 'PREV' | 'NEXT' = e.direction
     const index = e.index as number
     const panel: any = e.panel
-    console.log('onSelect', { direction, index, panel })
+    // console.log('onSelect', { direction, index, panel })
   }
 
   const execAsync = async (fn: () => Promise<any>) => {

@@ -10,19 +10,17 @@
         {{ idx }}
       </FixedRatio>
     </Slider>
-    <div class="block is-flex is-justify-content-center">
-      <button class="font-sans button mr-2 is-info is-outlined" @click="prev">
+    <div class="btn-bar">
+      <button class="btn-demo" @click="prev">
         prev
       </button>
-      <button class="button mr-2 is-info is-outlined" @click="next">
+      <button class="btn-demo" @click="next">
         next
       </button>
-    </div>
-    <div class="block is-flex is-justify-content-center">
-      <button class="button mr-2 is-info is-outlined" @click="onPrepend">
+      <button class="btn-demo" @click="onPrepend">
         Prepend
       </button>
-      <button class="button mr-2 is-info is-outlined" @click="onAppend">
+      <button class="btn-demo" @click="onAppend">
         Append
       </button>
     </div>
@@ -46,14 +44,15 @@ export default defineComponent({
     },
   },
   setup() {
-    const { list, prepend, append, getAt, last } = useList([
+    const { list, first, last, prepend, append } = useList([
       0, 1, 2, 3, 4, 5, 6, 7, 8,
     ])
     const onPrepend = () => {
-      list.value.splice(0, 0, ...[getAt(0) - 2, getAt(0) - 1])
+      const fv = first.value
+      list.value.splice(0, 0, ...[fv - 2, fv - 1])
     }
     const onAppend = () => {
-      let nextNum = last() + 1
+      let nextNum = last.value + 1
       const newList = '.'
         .repeat(10)
         .split('.')
@@ -87,6 +86,13 @@ export default defineComponent({
 </script>
 
 <style>
+.btn-bar {
+  @apply block is-flex is-justify-content-center
+}
+
+.btn-demo {
+ @apply button mr-2 is-info is-outlined
+}
 
 .slider-panel {
   background-color: transparent;

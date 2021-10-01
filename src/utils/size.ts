@@ -15,6 +15,12 @@ const toCss = (size: SizeWH): SizeCss => {
   }
 }
 
+const toCssString = (size: SizeWH): string => {
+  const css = toCss(size)
+  return `width: ${css.width}px; height: ${css.height}px; `
+}
+
 export const Size = {
   toCss,
+  toCssString,
 }

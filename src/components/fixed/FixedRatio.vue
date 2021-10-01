@@ -1,12 +1,12 @@
 <template>
-  <div class="box-border" :style="style">
-    <slot></slot>
+  <div :class="classes" :style="styles">
+    <slot v-bind="{ classes, styles }"></slot>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue-demi'
-import { Size, Ratio, RatioString } from '../utils'
+import { Size, Ratio, RatioString } from '../../utils'
 
 export default defineComponent({
   props: {
@@ -22,6 +22,10 @@ export default defineComponent({
       type: Number,
       default: 100,
     },
+    classes: {
+      type: String,
+      default: 'box-border',
+    },
   },
   setup(props) {
     const ratioXY = computed(() => Ratio.parse(props.ratio))
@@ -32,8 +36,8 @@ export default defineComponent({
         return Ratio.toSizeFromWidth(ratioXY.value, props.length)
       throw new Error(`FixedRatio fixed=[height|width] not ${props.fixed}`)
     })
-    const style = computed(() => Size.toCss(size.value))
-    return { style }
+    const styles = computed(() => Size.toCss(size.value))
+    return { styles }
   },
 })
 </script>

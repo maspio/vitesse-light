@@ -6,13 +6,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { isDark, toggleDark } from "~/logic";
+import { defineComponent } from 'vue'
+import { isDark, toggleDark } from '~/logic'
 
 export default defineComponent({
   setup() {
-    return { isDark, toggleDark };
+    return { isDark, toggleDark }
   },
-});
+})
 </script>
-

@@ -25,12 +25,12 @@ const stringify = (x: number, y: number): RatioString => {
 
 const toSizeFromHeight = (ratio: RatioXY, height: number): SizeWH => {
   const scale = ratio.rx > 1 ? ratio.rx : 1 / ratio.ry
-  return { height, width: height * scale }
+  return { height, width: Math.round(height * scale) }
 }
 
 const toSizeFromWidth = (ratio: RatioXY, width: number): SizeWH => {
   const scale = ratio.ry > 1 ? ratio.ry : 1 / ratio.rx
-  return { height: width * scale, width }
+  return { height: Math.round(width * scale), width }
 }
 
 // const toSize = (ratio: RatioXY, length: number): SizeWH => {
