@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue-demi'
 
 export const useList = <T>(items: T[] = []) => {
   const list = ref(items)

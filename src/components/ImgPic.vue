@@ -1,14 +1,15 @@
 <template>
   <picture :class="classes" :style="styles">
     <source
-      :srcset="imgSrc.webp"
+      :srcset="image.webp"
       type="image/webp"
     />
     <img
       :class="classes"
       :style="styles"
-      :src="imgSrc.jpg"
+      :src="image.jpg"
       :alt="alt"
+      :onload="onLoad"
       loading="lazy"
     />
   </picture>
@@ -17,10 +18,11 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue-demi'
 import { ImageSource } from '../types/image'
+import { SizeWH, Size } from '../utils'
 
 export default defineComponent({
   props: {
-    imgSrc: {
+    image: {
       type: Object as PropType<ImageSource>,
       required: true,
     },
@@ -32,13 +34,18 @@ export default defineComponent({
       type: String,
       default: 'w-full h-full',
     },
-    styles: {
-      type: Object,
-      default: () => {},
+    size: {
+      type: Object as PropType<SizeWH>,
+      required: true,
     },
   },
-  setup() {
-    return {}
+  emits: ['loaded'],
+  setup(props, { emit }) {
+    const styles = computed(() => Size.toCss(props.size))
+    const onLoad = () => {
+      emit('loaded')
+    }
+    return { onLoad, styles }
   },
 })
 </script>

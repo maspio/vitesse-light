@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" :style="styles">
-    <slot v-bind="{ classes, styles }"></slot>
+    <slot v-bind="{ size }"></slot>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default defineComponent({
       throw new Error(`FixedRatio fixed=[height|width] not ${props.fixed}`)
     })
     const styles = computed(() => Size.toCss(size.value))
-    return { styles }
+    return { size, styles }
   },
 })
 </script>

@@ -1,28 +1,33 @@
 <template>
-  <div class="font-sans">
-    <FixedHeight :height="height">
-      <Slider v-if="list.length" class="w-full" :style="`height: ${height}px;`" @ready="onReady">
+  <div>
+    <div :style="`height: ${height}px;`">
+      <Slider
+        v-if="list.length"
+        classes="flicking w-full"
+        :style="`height: ${height}px;`"
+        @ready="onReady"
+      >
         <FixedRatio
-          v-for="item in list"
-          :key="item.title"
-          v-slot="{classes, styles}"
-          :length="height"
+          v-for="(item, index) in list"
+          :key="`slider-panel-${index}`"
+          v-slot="{ size }"
+          :length="height - 12"
           :ratio="item.image.ratio"
-          class="slider-panel mr-2"
+          :classes="`slider-panel panel${index}`"
         >
-          <ImgPic :img-src="item.image" :classes="classes" :styles="styles"></ImgPic>
+          <ImgImg :image="item.image" :size="size"></ImgImg>
         </FixedRatio>
       </Slider>
-    </FixedHeight>
-    <div class="btn-bar mt-3">
-      <button class="btn-demo" @click="prev">
+      <div v-if="error">
+        {{ error }}
+      </div>
+    </div>
+    <div class="block space-x-3 mt-4">
+      <button @click="prev">
         prev
       </button>
-      <button class="btn-demo" @click="next">
+      <button @click="next">
         next
-      </button>
-      <button class="btn-demo" @click="fetchMore">
-        more
       </button>
     </div>
   </div>
@@ -31,12 +36,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import {
-  useList,
   SliderActions,
   SliderReadyHandler,
   UseSliderState,
+  useFetchMore,
 } from '../../logic'
-import { ShelfItemMockResponse } from '../../mock'
 import { ShelfItem } from '~/types/shelf'
 
 export default defineComponent({
@@ -46,11 +50,15 @@ export default defineComponent({
       default: 300,
     },
   },
-  setup() {
-    const { list, prepend, append } = useList<ShelfItem>()
+  emits: ['loadmore'],
+  setup(_props, { emit }) {
+    const { list, canFetchMore, fetchMore, error } = useFetchMore<ShelfItem>(
+      'http://localhost:5001/api/views/pMwkLFaq/fetch',
+    )
 
-    const fetchMore = () => {
-      append(...ShelfItemMockResponse.hits)
+    const onLoadMore = async () => {
+      if (canFetchMore.value) await fetchMore()
+      emit('loadmore')
     }
 
     const sliderElement = ref<any>()
@@ -60,39 +68,26 @@ export default defineComponent({
       sliderElement.value = slider
       sliderState.value = state
       sliderActions.value = actions
+      sliderElement.value.on('needPanel', onLoadMore)
     }
     const prev = () => sliderActions.value?.prev()
     const next = () => sliderActions.value?.next()
 
-    fetchMore()
     return {
       list,
-      prepend,
-      append,
+      fetchMore,
+      canFetchMore,
       onReady,
       prev,
       next,
-      fetchMore,
+      error,
     }
   },
 })
 </script>
 
 <style>
-.btn-bar {
-  @apply block is-flex is-justify-content-center
-}
-
-.btn-demo {
-  @apply mr-2 is-info is-outlined
-}
-
 .slider-panel {
-  background-color: transparent;
-  border-color: red;
-  border-style: inset;
-  border-width: thin;
-  border-style: solid;
+  @apply inline-block mb-3 mr-4 shadow-md shadow-dark-900 rounded-lg bg-transparent;
 }
-
 </style>

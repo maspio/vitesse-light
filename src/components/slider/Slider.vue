@@ -2,6 +2,7 @@
   <Flicking
     ref="target"
     :options="options"
+    :class="classes"
     @ready="onReady"
   >
     <slot></slot>
@@ -23,21 +24,26 @@ export default defineComponent({
   components: {
     Flicking,
   },
+  props: {
+    classes: {
+      type: String,
+      default: 'flicking w-full',
+    },
+  },
   emits: ['ready'],
   setup(_props, { emit }) {
     const target = ref<Flicking>()
     const options = reactive({
       align: 'prev',
+      gap: 10,
       bound: true,
+      lastIndex: 80,
+      infinite: true,
       horizontal: true,
-      needPanelThreshold: 3,
+      needPanelThreshold: 4,
       moveType: 'snap',
       renderOnlyVisible: true,
-      autoResize: true,
-      bounce: '20%',
-      deceleration: 0.0075,
-      duration: 100,
-      inputType: ['pointer'],
+      inputType: ['touch', 'mouse'],
     })
     const onReady: SliderReadyHandler = (slider, state, actions, e) => {
       emit('ready', slider, state, actions, e)
