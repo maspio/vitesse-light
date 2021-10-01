@@ -1,0 +1,65 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.194.3/containers/typescript-node
+{
+	"name": "Node.js & TypeScript",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick a Node version: 16, 14, 12.
+		// Append -bullseye or -buster to pin to an OS version.
+		// Use the -bullseye variants if you are on a M1 mac.		
+		"args": {
+			"VARIANT": "16-bullseye"
+		}
+	},
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"cSpell.words": [
+			"Vitesse"
+		],
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"volar.tsPlugin": true,
+		"volar.tsPluginStatus": false,
+		"volar.takeOverBuiltinTsExtension": false,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": true,
+		},
+		"typescript.format.enable": true,
+		"typescript.format.semicolons": "remove",
+		"javascript.preferences.quoteStyle": "single",
+		"typescript.preferences.quoteStyle": "single",
+		"editor.tabSize": 2,
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"**/node_modules": true,
+		},
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/bower_components": true,
+			"**/*.code-search": true
+		},
+		"files.associations": {
+			"*.css": "postcss",
+		},
+	},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"antfu.vite",
+		"johnsoncodehk.volar",
+		"antfu.iconify",
+		"dbaeumer.vscode-eslint",
+		"voorjaar.windicss-intellisense",
+		"csstools.postcss",
+		"johnsoncodehk.vscode-typescript-vue-plugin"
+	],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "yarn install",
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "node"
+}

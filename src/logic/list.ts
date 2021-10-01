@@ -12,5 +12,5 @@ export const useList = <T>(items: T[] = []) => {
   const append = (...items: T[]) => {
     list.value.push(...items as any)
   }
-  return { list, length, prepend, append, maxIndex: lastIndex, getAt, last }
+  return { list, length, prepend, append, lastIndex, getAt, last }
 }

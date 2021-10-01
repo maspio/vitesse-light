@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // eslint-disable-next-line import/named
-import { ref, computed, Ref } from 'vue'
+import { ref, computed, Ref } from 'vue-demi'
 // eslint-disable-next-line import/named
 import Flicking, { Status, Panel } from '@egjs/vue3-flicking'
 
