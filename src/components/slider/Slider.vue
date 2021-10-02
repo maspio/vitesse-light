@@ -40,7 +40,7 @@ export default defineComponent({
       lastIndex: 80,
       infinite: true,
       horizontal: true,
-      needPanelThreshold: 4,
+      needPanelThreshold: 6,
       moveType: 'snap',
       renderOnlyVisible: true,
       inputType: ['touch', 'mouse'],

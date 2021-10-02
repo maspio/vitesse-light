@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
-// eslint-disable-next-line import/named
+
 import { ref, computed, Ref } from 'vue-demi'
 // eslint-disable-next-line import/named
 import Flicking, { Status, Panel } from '@egjs/vue3-flicking'
@@ -14,8 +12,10 @@ export type UseSliderState = {
 }
 
 export type SliderActions = {
-  next: () => Promise<void>
   prev: () => Promise<void>
+  prevPage: () => Promise<void>
+  next: () => Promise<void>
+  nextPage: () => Promise<void>
 }
 
 export type SliderReadyHandler = (slider: Flicking, state: UseSliderState, actions: SliderActions, e: any) => void
@@ -32,45 +32,38 @@ const DefOpts: Opts = {
 export const useSlider = (opts: Opts = DefOpts) => {
   const target = opts.target || ref<Flicking>()
   const panels = ref<Panel[]>()
-  const status = ref<Status>({
-    panels: [],
-  })
-  const plugins: Array<any> = []
+  const status = ref<Status>({ panels: [] })
 
   const isMoving = ref(false)
   const isNavigating = ref(false)
   const isBusy = computed(() => [isMoving.value, isNavigating.value].some(f => !!f))
 
-  // const currentPanel = computed(() => target.value?.currentPanel);
-  const onMoveStart = (_e: any) => {
-    isMoving.value = true
-  }
-  const onMoveEnd = (e: any) => {
-    isMoving.value = false
-  }
-  const onNeedPanel = (e: any) => {
-    const direction: 'PREV' | 'NEXT' = e.direction
-    // console.log('onNeedPanel', { direction })
-  }
-  const onReachEdge = (e: any) => {
-    const direction: 'PREV' | 'NEXT' = e.direction
-    // console.log('onReachEdge', { direction })
-  }
-  const onVisibleChange = (e: any) => {
-    const visiblePanelsRaw: Array<any> = e.visiblePanels
-    const visiblePanels = visiblePanelsRaw.map(p => ({
+  const visiblePanels = ref([{
+    index: -1,
+    loading: false,
+    toggled: false,
+    removed: false,
+  }])
+
+  const selectedIdx = ref<number>()
+  const selectedPanel = ref<Panel>()
+
+  const onMoveStart = () => isMoving.value = true
+  const onMoveEnd = () => isMoving.value = false
+
+  const onVisibleChange = (e: any) =>
+    visiblePanels.value = e.visiblePanels.map((p: any) => ({
       index: p._index as number,
       loading: p._loading as boolean,
       toggled: p._toggled as boolean,
       removed: p._removed as boolean,
     }))
-    // console.log('onVisibleChange', { visiblePanels })
-  }
+
   const onSelect = (e: any) => {
-    const direction: 'PREV' | 'NEXT' = e.direction
     const index = e.index as number
     const panel: any = e.panel
-    // console.log('onSelect', { direction, index, panel })
+    selectedIdx.value = index
+    selectedPanel.value = panel
   }
 
   const execAsync = async (fn: () => Promise<any>) => {
@@ -81,13 +74,29 @@ export const useSlider = (opts: Opts = DefOpts) => {
     })
     isNavigating.value = false
   }
-  const prev = () => {
-    return execAsync(target!.value!.prev)
+  const prev = () => execAsync(target.value.prev)
+  const next = () => execAsync(target.value.next)
+  const dirPage = (dir: -1 | 1 = 1) => {
+    const status: Status = target.value.getStatus()
+
+    if (Number.isNaN(status.index) || !status.panels.length) return Promise.resolve()
+    const idx = status.index || 0
+    const visLength = visiblePanels.value.length
+    const idxDiff = Math.max(visLength - 1, 1)
+    let nextIdx = idx + dir * idxDiff
+    nextIdx = Math.min(Math.max(0, nextIdx), status.panels.length - 1)
+    // eslint-disable-next-line no-console
+    // console.log('nextPage', { idx, nextIdx, visLength })
+    return execAsync(() => target.value.moveTo(nextIdx))
   }
-  const next = () => {
-    const f = target!.value!
-    return execAsync(f.next)
-    // execAsync(() => f.moveTo(f.index + 1));
+  const prevPage = () => dirPage(-1)
+  const nextPage = () => dirPage(1)
+
+  const actions: SliderActions = {
+    prev,
+    prevPage,
+    next,
+    nextPage,
   }
 
   const onReady = (e: any) => {
@@ -99,35 +108,13 @@ export const useSlider = (opts: Opts = DefOpts) => {
       isNavigating,
       isBusy,
     }
-    const actions: SliderActions = {
-      prev,
-      next,
-    }
+
     slider.on('moveStart', onMoveStart)
     slider.on('moveStart', onMoveEnd)
-    slider.on('needPanel', onNeedPanel)
-    slider.on('reachEdge', onReachEdge)
     slider.on('visibleChange', onVisibleChange)
     slider.on('select', onSelect)
     opts.onReady?.(slider, state, actions, e)
   }
 
-  return { target, panels, status, plugins, onReady, isBusy, isMoving, prev, next }
+  return { target, panels, status, onReady, isBusy, isMoving, isNavigating, visiblePanels, selectedIdx, selectedPanel, actions }
 }
-
-// type UseSlider = ReturnType<typeof useSlider>
-// type UseSliderRef = Ref<UseSlider>
-// type UseSliderInjectionKey = InjectionKey<UseSliderRef>
-
-// const UseSliderKey: UseSliderInjectionKey = Symbol('use-slider')
-
-// export const useSliderProvider = (
-// ) => {
-//   const target = ref<Flicking>()
-//   const slider: UseSlider = useSlider({ target })
-//   const useSliderRef = ref(slider)
-//   provide(UseSliderKey, useSliderRef)
-//   return slider
-// }
-
-// export const useSliderInjected = () => inject(UseSliderKey)

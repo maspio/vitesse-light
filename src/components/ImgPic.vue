@@ -5,18 +5,18 @@
       type="image/webp"
     />
     <img
+      ref="target"
       :class="classes"
       :style="styles"
       :src="image.jpg"
       :alt="alt"
-      :onload="onLoad"
       loading="lazy"
     />
   </picture>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue-demi'
+import { defineComponent, PropType, watchEffect } from 'vue-demi'
 import { ImageSource } from '../types/image'
 import { SizeWH, Size } from '../utils'
 
@@ -41,11 +41,24 @@ export default defineComponent({
   },
   emits: ['loaded'],
   setup(props, { emit }) {
+    const target = ref<HTMLImageElement>()
+    let isLoaded = false
     const styles = computed(() => Size.toCss(props.size))
     const onLoad = () => {
-      emit('loaded')
+      if (!isLoaded) {
+        emit('loaded')
+        isLoaded = true
+      }
     }
-    return { onLoad, styles }
+    const unwatch = watchEffect(() => {
+      if (target.value) {
+        const complete = target.value.complete
+        if (complete) onLoad()
+        else target.value.onload = onLoad
+        unwatch()
+      }
+    })
+    return { target, styles }
   },
 })
 </script>

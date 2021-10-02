@@ -23,11 +23,17 @@
       </div>
     </div>
     <div class="block space-x-3 mt-4">
+      <button @click="prevPage">
+        ppp
+      </button>
       <button @click="prev">
-        prev
+        p
       </button>
       <button @click="next">
-        next
+        n
+      </button>
+      <button @click="nextPage">
+        nnn
       </button>
     </div>
   </div>
@@ -53,7 +59,7 @@ export default defineComponent({
   emits: ['loadmore'],
   setup(_props, { emit }) {
     const { list, canFetchMore, fetchMore, error } = useFetchMore<ShelfItem>(
-      'http://localhost:5001/api/views/pMwkLFaq/fetch',
+      'http://localhost/api/views/pMwkLFaq/fetch',
     )
 
     const onLoadMore = async () => {
@@ -72,6 +78,9 @@ export default defineComponent({
     }
     const prev = () => sliderActions.value?.prev()
     const next = () => sliderActions.value?.next()
+    const prevPage = () => sliderActions.value?.prevPage()
+
+    const nextPage = () => sliderActions.value?.nextPage()
 
     return {
       list,
@@ -80,6 +89,8 @@ export default defineComponent({
       onReady,
       prev,
       next,
+      prevPage,
+      nextPage,
       error,
     }
   },

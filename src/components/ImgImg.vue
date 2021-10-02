@@ -1,7 +1,7 @@
 <template>
   <div class="relative-full-size">
     <ImgBlur
-      :classes="`absolute-full-size img-blur ${loaded ? 'img-blur-loaded' : 'img-blur-loading'}`"
+      :classes="`absolute-full-size img-blur ${loading ? 'img-blur-loading' : ''}`"
       :size="size"
       :base83="image.base83"
     ></ImgBlur>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue-demi'
+import { defineComponent, PropType, ref, onMounted } from 'vue-demi'
 import { ImageSource } from '../types/image'
 import { SizeWH } from '../utils'
 
@@ -33,11 +33,14 @@ export default defineComponent({
     },
   },
   setup() {
-    const loaded = ref(false)
+    const loading = ref(false)
     const onLoaded = () => {
-      loaded.value = true
+      loading.value = false
     }
-    return { loaded, onLoaded }
+    onMounted(async () => {
+      loading.value = true
+    })
+    return { loading, onLoaded }
   },
 })
 </script>
@@ -52,15 +55,11 @@ export default defineComponent({
 }
 
 .img-blur {
-  @apply box-border z-10 transition-opacity duration-400 delay-300 ease-in pointer-events-none
+  @apply box-border z-10 transition-opacity opacity-0 duration-400 delay-300 ease-in pointer-events-none
 }
 
 .img-blur-loading {
   @apply opacity-100
-}
-
-.img-blur-loaded {
-  @apply opacity-0
 }
 
 .img-rounded {
