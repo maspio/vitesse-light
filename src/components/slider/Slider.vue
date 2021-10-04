@@ -30,7 +30,7 @@ export default defineComponent({
       default: 'flicking w-full',
     },
   },
-  emits: ['ready'],
+  emits: ['ready', 'selected'],
   setup(_props, { emit }) {
     const target = ref<Flicking>()
     const options = reactive({
@@ -59,5 +59,5 @@ export default defineComponent({
 </script>
 
 <style>
-@import "@egjs/vue3-flicking/dist/flicking.css";
+@import "../../styles/slider.css";
 </style>

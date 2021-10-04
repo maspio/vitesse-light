@@ -3,7 +3,7 @@ import { ref, computed, Ref } from 'vue-demi'
 // eslint-disable-next-line import/named
 import Flicking, { Status, Panel } from '@egjs/vue3-flicking'
 
-export type UseSliderState = {
+export type SliderState = {
   panels: Ref<Panel[] |undefined>
   status: Ref<Status>
   isMoving: Ref<boolean>
@@ -16,13 +16,16 @@ export type SliderActions = {
   prevPage: () => Promise<void>
   next: () => Promise<void>
   nextPage: () => Promise<void>
+  toPage: (index: number) => Promise<void>
 }
 
-export type SliderReadyHandler = (slider: Flicking, state: UseSliderState, actions: SliderActions, e: any) => void
+export type SliderReadyHandler = (slider: Flicking, state: SliderState, actions: SliderActions, e: any) => void
+export type SliderSelectedHandler = (slider: Flicking, index: number, panel: Panel, e: any) => void
 
 type Opts = {
   target?: Ref
   onReady?: SliderReadyHandler
+  onSelect?: SliderSelectedHandler
 }
 
 const DefOpts: Opts = {
@@ -37,6 +40,14 @@ export const useSlider = (opts: Opts = DefOpts) => {
   const isMoving = ref(false)
   const isNavigating = ref(false)
   const isBusy = computed(() => [isMoving.value, isNavigating.value].some(f => !!f))
+
+  const state: SliderState = {
+    panels,
+    status,
+    isMoving,
+    isNavigating,
+    isBusy,
+  }
 
   const visiblePanels = ref([{
     index: -1,
@@ -64,6 +75,7 @@ export const useSlider = (opts: Opts = DefOpts) => {
     const panel: any = e.panel
     selectedIdx.value = index
     selectedPanel.value = panel
+    opts.onSelect?.(target.value, index, panel, e)
   }
 
   const execAsync = async (fn: () => Promise<any>) => {
@@ -74,20 +86,22 @@ export const useSlider = (opts: Opts = DefOpts) => {
     })
     isNavigating.value = false
   }
+
   const prev = () => execAsync(target.value.prev)
   const next = () => execAsync(target.value.next)
+  const toPage = (index: number) => {
+    const status: Status = target.value.getStatus()
+    if (Number.isNaN(status.index) || !status.panels.length) return Promise.resolve()
+    return execAsync(() => target.value.moveTo(index))
+  }
   const dirPage = (dir: -1 | 1 = 1) => {
     const status: Status = target.value.getStatus()
-
-    if (Number.isNaN(status.index) || !status.panels.length) return Promise.resolve()
     const idx = status.index || 0
     const visLength = visiblePanels.value.length
     const idxDiff = Math.max(visLength - 1, 1)
     let nextIdx = idx + dir * idxDiff
     nextIdx = Math.min(Math.max(0, nextIdx), status.panels.length - 1)
-    // eslint-disable-next-line no-console
-    // console.log('nextPage', { idx, nextIdx, visLength })
-    return execAsync(() => target.value.moveTo(nextIdx))
+    return toPage(nextIdx)
   }
   const prevPage = () => dirPage(-1)
   const nextPage = () => dirPage(1)
@@ -97,23 +111,16 @@ export const useSlider = (opts: Opts = DefOpts) => {
     prevPage,
     next,
     nextPage,
+    toPage,
   }
 
   const onReady = (e: any) => {
     const slider = target.value! as Flicking
-    const state: UseSliderState = {
-      panels,
-      status,
-      isMoving,
-      isNavigating,
-      isBusy,
-    }
-
     slider.on('moveStart', onMoveStart)
     slider.on('moveStart', onMoveEnd)
     slider.on('visibleChange', onVisibleChange)
     slider.on('select', onSelect)
-    opts.onReady?.(slider, state, actions, e)
+    opts.onReady?.(target.value, state, actions, e)
   }
 
   return { target, panels, status, onReady, isBusy, isMoving, isNavigating, visiblePanels, selectedIdx, selectedPanel, actions }

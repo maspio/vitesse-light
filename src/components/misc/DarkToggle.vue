@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { isDark, toggleDark } from '~/logic'
+import { isDark, toggleDark } from '~/logic/misc/dark'
 
 export default defineComponent({
   setup() {

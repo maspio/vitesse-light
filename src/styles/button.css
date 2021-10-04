@@ -1,0 +1,26 @@
+
+.slider-buttons {
+  @apply z-0 relative inline-flex;
+}
+
+.slider-button {
+  @apply font-medium text-sm py-2 px-2 text-gray-500 relative inline-flex items-center;
+}
+
+.slider-button-rounded {
+  @apply rounded-md;
+}
+
+.slider-button-shadow {
+  @apply shadow-sm;
+}
+
+
+.slider-button-prev {
+  @apply rounded-l-md;
+}
+
+.slider-button-next {
+  @apply rounded-r-md -ml-px;
+}
+

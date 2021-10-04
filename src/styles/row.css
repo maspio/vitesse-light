@@ -1,0 +1,27 @@
+.slider-row {
+  @apply flex space-x-2 md:space-x-2 lg:space-x-4 items-center;
+}
+
+.slider-row-left {
+  @apply justify-start;
+}
+
+.slider-row-center {
+  @apply justify-start;
+}
+
+/* .slider-row-center {
+  @apply items-center justify-center;
+} */
+
+.slider-row-right {
+  @apply justify-end;
+}
+
+.slider-row-grow {
+  @apply flex-grow;
+}
+
+.slider-row-shrink {
+  @apply flex-shrink;
+}

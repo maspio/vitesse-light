@@ -1,19 +1,15 @@
 {
-  "cSpell.words": [
-    "Vitesse"
-  ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "volar.tsPlugin": true,
-  "volar.tsPluginStatus": false,
-  "volar.takeOverBuiltinTsExtension": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
   },
+  "css.lint.unknownAtRules": "ignore",
   "typescript.format.enable": true,
   "typescript.format.semicolons": "remove",
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "editor.tabSize": 2,
+  "windicss.sortOnSave": false,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -28,7 +24,5 @@
     "**/bower_components": true,
     "**/*.code-search": true
   },
-  "files.associations": {
-    "*.css": "postcss",
-  },
+
 }

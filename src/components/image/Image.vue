@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted } from 'vue-demi'
-import { ImageSource } from '../types/image'
-import { SizeWH } from '../utils'
+import { ImageSource } from '../../types/image'
+import { SizeWH } from '../../utils'
 
 /* eslint-disable no-console */
 
@@ -44,26 +44,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style>
-.relative-full-size {
-  @apply box-border relative w-full h-full rounded-lg
-}
-
-.absolute-full-size {
-  @apply box-border absolute left-0 top-0 right-0 bottom-0 rounded-lg
-}
-
-.img-blur {
-  @apply box-border z-10 transition-opacity opacity-0 duration-400 delay-300 ease-in pointer-events-none
-}
-
-.img-blur-loading {
-  @apply opacity-100
-}
-
-.img-rounded {
-  @apply rounded-lg
-}
-
-</style>

@@ -1,12 +1,11 @@
 <template>
-  <div class="m-1 lg:m-8 space-y-1 lg:space-y-8">
+  <div class="m-8 space-y-4">
     <page-section>
-      <h1 class="font-light text-2xl tracking-wider">
-        ZHB Bookslider
-      </h1>
+      <h1>ZHB Bookslider Demo</h1>
     </page-section>
-    <page-section>
-      <Bookslider title="Neuerwerbungen"></Bookslider>
+    <page-section class="space-y-2">
+      <h2>Catalog Slider</h2>
+      <Bookslider></Bookslider>
     </page-section>
   </div>
 </template>

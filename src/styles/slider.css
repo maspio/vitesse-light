@@ -1,0 +1,24 @@
+@import "./base.css";
+@import "./button.css";
+@import "./icon.css";
+@import "./image.css";
+@import "./select.css";
+@import "./row.css";
+
+@import "@egjs/vue3-flicking/dist/flicking.css";
+
+.slider-border {
+  @apply bg-white border border-gray-300;
+}
+
+.slider-no-border {
+  @apply border-none border-transparent focus:(border-none border-transparent) ;
+}
+
+.slider-no-shadow {
+  @apply shadow-none;
+}
+
+.slider-no-outline {
+  @apply outline-none;
+}
