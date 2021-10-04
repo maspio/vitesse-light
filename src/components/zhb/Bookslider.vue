@@ -11,7 +11,7 @@
         <SliderFilter @selection-changed="onFilterChanged"></SliderFilter>
       </template>
       <template #right>
-        <SliderButton class="hidden md:block" @clickprevious="prevPage" @clicknext="nextPage"></SliderButton>
+        <SliderButton class="hidden sm:block" @clickprevious="prevPage" @clicknext="nextPage"></SliderButton>
       </template>
     </SliderRow>
     <!-- Slider -->
@@ -81,18 +81,30 @@ export default defineComponent({
   },
   emits: ['loadmore'],
   setup(_props, { emit }) {
+    const isReady = ref(false)
     const isSliderReady = ref(false)
 
     const { list, canFetchMore, fetchMore, error } = useFetchMore<ShelfItem>(
       'http://localhost/api/views/pMwkLFaq/fetch',
     )
+    const isListReady = computed(() => list.value.length > 0)
 
-    const isReady = computed(() => {
-      return list.value.length > 0 && isSliderReady.value
+    watchEffect(() => {
+      if (isSliderReady.value && isListReady) {
+        // eslint-disable-next-line no-console
+        setTimeout(() => {
+          isReady.value = true
+          console.log('isReady')
+        }, 1000)
+        //
+      }
     })
 
     const onLoadMore = async () => {
-      if (isReady.value && canFetchMore.value) await fetchMore()
+      if (!isReady.value || !canFetchMore.value) return Promise.resolve()
+      await fetchMore()
+      // eslint-disable-next-line no-console
+      console.log('load more')
       emit('loadmore')
     }
     const sliderElement = ref<any>()
