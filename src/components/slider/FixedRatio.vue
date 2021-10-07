@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue-demi'
-import { Size, Ratio, RatioString } from '../../utils'
+import { Size, Ratio, RatioString } from '~/utils'
 
 export default defineComponent({
   props: {

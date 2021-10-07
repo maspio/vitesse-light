@@ -27,6 +27,7 @@ export default defineConfig({
         'vue-router',
         '@vueuse/core',
       ],
+      dts: true,
     }),
 
     // https://github.com/antfu/vite-plugin-components
@@ -38,10 +39,13 @@ export default defineConfig({
           componentPrefix: '',
         }),
       ],
+      dts: true,
     }),
 
     // https://github.com/antfu/vite-plugin-icons
-    Icons(),
+    Icons({
+      autoInstall: true,
+    }),
 
     // https://github.com/antfu/vite-plugin-windicss
     WindiCSS(),

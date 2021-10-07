@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted } from 'vue-demi'
-import { ImageSource } from '../../types/image'
-import { SizeWH } from '../../utils'
+import { ImageSource } from '~/types/image'
+import { SizeWH } from '~/utils'
 
 /* eslint-disable no-console */
 

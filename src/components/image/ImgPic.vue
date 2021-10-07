@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, watchEffect } from 'vue-demi'
-import { ImageSource } from '../../types/image'
-import { SizeWH, Size } from '../../utils'
+import { SizeWH, Size } from '~/utils'
+import { ImageSource } from '~/types/image'
 
 export default defineComponent({
   props: {

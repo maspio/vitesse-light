@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue-demi'
 import Flicking from '@egjs/vue3-flicking'
-import { useSlider, SliderReadyHandler } from '../../logic/slider'
+import { useSlider, SliderReadyHandler } from '~/logic/slider'
 
 /**
  * Flicking
@@ -57,7 +57,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style>
-@import "../../styles/slider.css";
-</style>

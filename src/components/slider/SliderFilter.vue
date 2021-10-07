@@ -1,18 +1,14 @@
 <template>
-  <SliderRow grow="left">
-    <template #left>
-      <SliderSelect
-        name="Department"
-        :items="departmentFilters"
-        @selection-changed="onFilterChanged"
-      ></SliderSelect>
-    </template>
-  </SliderRow>
+  <SliderSelect
+    name="Department"
+    :items="departmentFilters"
+    @selection-changed="onFilterChanged"
+  ></SliderSelect>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue-demi'
-import { departmentFilters } from '../../logic/mock/departments'
+import { departmentFilters } from '~/logic/mock/departments'
 
 export default defineComponent({
   emits: ['selection-changed'],

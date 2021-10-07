@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <!-- Header -->
-    <SliderRow grow="center">
+    <Row grow="center">
       <template #left>
         <h2 class="slider-title">
           {{ title }}
@@ -11,9 +11,13 @@
         <SliderFilter @selection-changed="onFilterChanged"></SliderFilter>
       </template>
       <template #right>
-        <SliderButton class="hidden sm:block" @clickprevious="prevPage" @clicknext="nextPage"></SliderButton>
+        <SliderButton
+          class="hidden sm:block"
+          @clickprevious="prevPage"
+          @clicknext="nextPage"
+        ></SliderButton>
       </template>
-    </SliderRow>
+    </Row>
     <!-- Slider -->
     <div :style="`height: ${height}px; `">
       <div v-if="error" class="slider-center">
@@ -24,7 +28,9 @@
         loading
       </div>
       <Slider
-        :classes="`flicking w-full transition-opacity ${isReady ? 'opacity-100' : 'opacity-0'}`"
+        :classes="`flicking w-full transition-opacity ${
+          isReady ? 'opacity-100' : 'opacity-0'
+        }`"
         :style="`height: ${height}px;`"
         @ready="onSliderReady"
       >
@@ -40,21 +46,6 @@
         </FixedRatio>
       </Slider>
     </div>
-
-    <!-- <div class="space-x-3 mt-4 block">
-      <button @click="prevPage">
-        ppp
-      </button>
-      <button @click="prev">
-        p
-      </button>
-      <button @click="next">
-        n
-      </button>
-      <button @click="nextPage">
-        nnn
-      </button>
-    </div> -->
   </div>
 </template>
 
@@ -65,8 +56,8 @@ import {
   SliderReadyHandler,
   SliderState,
   useFetchMore,
-} from '../../logic'
-import { ShelfItem } from '~/types/shelf'
+} from '~/logic/index'
+import { SelectItem, ShelfItem } from '~/types'
 
 export default defineComponent({
   props: {
@@ -78,25 +69,55 @@ export default defineComponent({
       type: Number,
       default: 300,
     },
+    apiUrl: {
+      type: String,
+      default: 'http://localhost/api/views/pMwkLFaq/fetch',
+    },
+    apiQuery: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['loadmore'],
-  setup(_props, { emit }) {
+  setup(props, { emit }) {
+    // 'http://localhost/api/views/pMwkLFaq/fetch'
+    // 'local_field_990,exact,"nl202109"OR"nl202108"'
+
+    const filterSelected = ref<SelectItem | null>(null)
+    const hasFilterSelected = computed(() => {
+      return filterSelected.value
+        && filterSelected.value.value
+        && filterSelected.value.value.length
+    })
+
     const isReady = ref(false)
     const isSliderReady = ref(false)
 
+    const query = computed(() => {
+      if (!hasFilterSelected.value) return props.apiQuery
+      // eslint-disable-next-line no-console
+      console.log('filter selected', filterSelected.value)
+      const fq = `,AND;lds26,exact,${filterSelected.value!.value
+        .map(v => `"${v}"`)
+        .join('OR')}`
+      return props.apiQuery + fq
+    })
+
+    const url = computed(() => {
+      return `${props.apiUrl}?${query.value}`
+    })
+
     const { list, canFetchMore, fetchMore, error } = useFetchMore<ShelfItem>(
-      'http://localhost/api/views/pMwkLFaq/fetch',
+      url,
+      { pageSize: 10 },
     )
     const isListReady = computed(() => list.value.length > 0)
 
     watchEffect(() => {
       if (isSliderReady.value && isListReady) {
-        // eslint-disable-next-line no-console
         setTimeout(() => {
           isReady.value = true
-          console.log('isReady')
-        }, 1000)
-        //
+        }, 2000)
       }
     })
 
@@ -104,7 +125,7 @@ export default defineComponent({
       if (!isReady.value || !canFetchMore.value) return Promise.resolve()
       await fetchMore()
       // eslint-disable-next-line no-console
-      console.log('load more')
+      // console.log('load more')
       emit('loadmore')
     }
     const sliderElement = ref<any>()
@@ -123,12 +144,12 @@ export default defineComponent({
     const prevPage = () => sliderActions.value?.prevPage()
     const nextPage = () => sliderActions.value?.nextPage()
 
-    const onFilterChanged = async (selection: any) => {
-      // filterSelected.value = selection
-      // updateUrl()
+    const onFilterChanged = (selection: any) => {
+      filterSelected.value = selection
     }
 
     return {
+      filterSelected,
       isReady,
       list,
       fetchMore,
@@ -147,19 +168,5 @@ export default defineComponent({
 </script>
 
 <style>
-.transition-opacity {
-  @apply transition-opacity duration-400 ease-in;
-}
-
-.slider-panel {
-  @apply bg-transparent rounded-lg shadow-md mr-4 mb-3 shadow-dark-900 inline-block;
-}
-.slider-center {
-  @apply flex h-full w-full justify-center items-center;
-}
-
-.slider-title {
-   @apply text-base tracking-wider font-medium truncate hyphens-none;
-}
-
+@import "../../styles/slider.css";
 </style>

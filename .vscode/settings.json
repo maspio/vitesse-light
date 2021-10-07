@@ -9,6 +9,7 @@
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "editor.tabSize": 2,
+  "browse-lite.startUrl": "http://localhost:4000/",
   "windicss.sortOnSave": false,
   "files.exclude": {
     "**/.git": true,

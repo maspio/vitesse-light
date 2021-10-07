@@ -1,9 +1,16 @@
 <template>
   <div class="m-1 lg:m-8 space-y-1 lg:space-y-8">
     <page-section>
-      <h1 class="font-light text-2xl tracking-wider">
-        ZHB Bookslider
-      </h1>
+      <Row>
+        <template #left>
+          <h1 class="font-light text-2xl tracking-wider">
+            ZHB Bookslider
+          </h1>
+        </template>
+        <template #right>
+          <dark-toggle></dark-toggle>
+        </template>
+      </Row>
     </page-section>
     <page-section>
       <Bookslider title="Neuerwerbungen"></Bookslider>

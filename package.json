@@ -6,32 +6,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@egjs/flicking-plugins": "^4.2.1",
     "@egjs/vue3-flicking": "^4.3.0",
-    "@vueuse/core": "^6.0.0",
-    "pinia": "^2.0.0-rc.9",
-    "vue": "^3.2.6",
-    "vue-demi": "^0.11.3",
+    "@vueuse/core": "^6.5.3",
+    "vue": "^3.2.19",
+    "vue-demi": "^0.11.4",
     "vue-router": "^4.0.11",
     "@picibird/blurhash-ts": "^1.1.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.7.0",
-    "@iconify/json": "^1.1.395",
-    "@types/node": "^16.7.6",
-    "@typescript-eslint/eslint-plugin": "^4.29.3",
-    "@vitejs/plugin-vue": "^1.6.0",
-    "@vue/compiler-sfc": "^3.2.6",
+    "@antfu/eslint-config": "^0.9.0",
+    "@iconify-json/carbon": "^1.0.3",
+    "@types/node": "^16.10.2",
+    "@vitejs/plugin-vue": "^1.9.2",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
-    "pnpm": "^6.14.5",
-    "typescript": "^4.4.2",
-    "unplugin-auto-import": "^0.2.4",
-    "unplugin-icons": "^0.7.3",
-    "unplugin-vue-components": "^0.14.3",
-    "vite": "^2.5.1",
-    "vite-plugin-pages": "^0.17.5",
-    "vite-plugin-windicss": "^1.3.0"
+    "typescript": "^4.4.3",
+    "unplugin-auto-import": "^0.4.10",
+    "unplugin-icons": "^0.12.3",
+    "unplugin-vue-components": "^0.15.6",
+    "vite": "^2.6.2",
+    "vite-plugin-pages": "^0.18.1",
+    "vite-plugin-windicss": "^1.4.9"
   },
   "volta": {
     "node": "16.10.0"

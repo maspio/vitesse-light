@@ -7,6 +7,21 @@
 
 @import "@egjs/vue3-flicking/dist/flicking.css";
 
+.transition-opacity {
+  @apply transition-opacity duration-400 ease-in;
+}
+
+.slider-panel {
+  @apply bg-transparent rounded-lg shadow-md mr-4 mb-3 shadow-dark-900 inline-block;
+}
+.slider-center {
+  @apply flex h-full w-full justify-center items-center;
+}
+
+.slider-title {
+   @apply text-base tracking-wider font-medium truncate hyphens-none;
+}
+
 .slider-border {
   @apply bg-white border border-gray-300;
 }

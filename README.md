@@ -12,6 +12,10 @@
 
 <br>
 
+## antfu/vitesse-light
+
+Based on template antfu/vitesse-light from commit [chore: remove unused dependencies (#3)](https://github.com/antfu/vitesse-lite/commit/bb743967009f938e10c3cfccda71f03abc45bdae)
+
 ## Dropped Features
 
 - ~~i18n~~

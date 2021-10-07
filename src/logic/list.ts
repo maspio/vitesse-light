@@ -13,5 +13,8 @@ export const useList = <T>(items: T[] = []) => {
   const append = (...items: T[]) => {
     list.value.push(...items as any)
   }
-  return { list, length, at, first, lastIndex, last, prepend, append }
+  const clear = () => {
+    list.value.splice(0)
+  }
+  return { list, length, at, first, lastIndex, last, prepend, append, clear }
 }
