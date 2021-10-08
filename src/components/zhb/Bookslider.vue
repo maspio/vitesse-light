@@ -8,7 +8,12 @@
         </h2>
       </template>
       <template #default>
-        <SliderFilter @selection-changed="onFilterChanged"></SliderFilter>
+        <SliderSelect
+          :name="'filterSelect'"
+          placeholder="Alle Fachbereiche"
+          :items="facets"
+          @selection-changed="onFilter"
+        ></SliderSelect>
       </template>
       <template #right>
         <SliderButton
@@ -21,11 +26,10 @@
     <!-- Slider -->
     <div :style="`height: ${height}px; `">
       <div v-if="error" class="slider-center">
-        >
         {{ error }}
       </div>
       <div v-else-if="list.length === 0" class="slider-center">
-        loading
+        <Loading></Loading>
       </div>
       <Slider
         :classes="`flicking w-full transition-opacity ${
@@ -33,6 +37,7 @@
         }`"
         :style="`height: ${height}px;`"
         @ready="onSliderReady"
+        @visible-changed="onVisibleChanged"
       >
         <FixedRatio
           v-for="(item, index) in list"
@@ -50,14 +55,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from 'vue-demi'
+import { throttledWatch } from '@vueuse/core'
+
 import {
   SliderActions,
   SliderReadyHandler,
-  SliderState,
   useFetchMore,
+  SliderVisibleChangeHandler,
+  ArrayRange,
 } from '~/logic/index'
 import { SelectItem, ShelfItem } from '~/types'
+import { Facets } from '~/logic/mock'
 
 export default defineComponent({
   props: {
@@ -71,96 +80,83 @@ export default defineComponent({
     },
     apiUrl: {
       type: String,
-      default: 'http://localhost/api/views/pMwkLFaq/fetch',
+      default: 'http://localhost:5001/api/views/pMwkLFaq/fetch',
     },
-    apiQuery: {
+    apiToken: {
       type: String,
       default: '',
     },
   },
-  emits: ['loadmore'],
-  setup(props, { emit }) {
-    // 'http://localhost/api/views/pMwkLFaq/fetch'
-    // 'local_field_990,exact,"nl202109"OR"nl202108"'
-
-    const filterSelected = ref<SelectItem | null>(null)
-    const hasFilterSelected = computed(() => {
-      return filterSelected.value
-        && filterSelected.value.value
-        && filterSelected.value.value.length
-    })
-
-    const isReady = ref(false)
+  setup(props) {
+    // state
     const isSliderReady = ref(false)
-
+    // filter
+    const filterSelect = ref<SelectItem | null>(null)
+    const filter = computed(() => filterSelect.value?.value)
+    const onFilter = (selection: any) => filterSelect.value = selection
+    // url query
+    const queryFilter = computed(() => filter.value ? `filter=department:${filter.value}` : '')
+    const queryToken = computed(() => props.apiToken ? `token=${props.apiToken}` : '')
     const query = computed(() => {
-      if (!hasFilterSelected.value) return props.apiQuery
-      // eslint-disable-next-line no-console
-      console.log('filter selected', filterSelected.value)
-      const fq = `,AND;lds26,exact,${filterSelected.value!.value
-        .map(v => `"${v}"`)
-        .join('OR')}`
-      return props.apiQuery + fq
+      return [queryFilter.value, queryToken.value].filter(v => v).join('&')
     })
-
-    const url = computed(() => {
-      return `${props.apiUrl}?${query.value}`
-    })
-
-    const { list, canFetchMore, fetchMore, error } = useFetchMore<ShelfItem>(
-      url,
-      { pageSize: 10 },
-    )
+    const url = computed(() => [props.apiUrl, query.value].filter(v => v).join('?'))
+    // fetch more list
+    const pageSize = ref(10)
+    const { list, canFetchMore, fetchMore, error, isFetching } = useFetchMore<ShelfItem>(url, { pageSize })
     const isListReady = computed(() => list.value.length > 0)
-
-    watchEffect(() => {
-      if (isSliderReady.value && isListReady) {
-        setTimeout(() => {
-          isReady.value = true
-        }, 2000)
+    // slider
+    const isReady = computed(() => isSliderReady.value && isListReady.value)
+    const actions = ref<SliderActions>()
+    const onSliderReady: SliderReadyHandler = (slider, state, a) => {
+      isSliderReady.value = true
+      actions.value = a
+    }
+    // visible range
+    const vRange = ref<ArrayRange>({ from: 0, to: 0, length: 0, total: 0, right: 0 })
+    const onVisibleChanged: SliderVisibleChangeHandler = (panels, range) => {
+      vRange.value = range
+    }
+    // countdown trigger
+    const countdown = ref(Number.MAX_VALUE)
+    const trigger = ref(false)
+    throttledWatch(vRange, (range: ArrayRange) => {
+      // log.info('v-range', range)
+      countdown.value = vRange.value.right - vRange.value.length * 1.5
+    }, { throttle: 200, immediate: false })
+    watch(countdown, (v) => {
+      if (countdown.value < 0 && canFetchMore.value) {
+        // log.info('countdown', v)
+        trigger.value = true
+      }
+    })
+    watch(trigger, (v) => {
+      if (v) {
+        // log.info('trigger', v)
+        trigger.value = false
+        fetchMore()
       }
     })
 
-    const onLoadMore = async () => {
-      if (!isReady.value || !canFetchMore.value) return Promise.resolve()
-      await fetchMore()
-      // eslint-disable-next-line no-console
-      // console.log('load more')
-      emit('loadmore')
-    }
-    const sliderElement = ref<any>()
-    const sliderState = ref<SliderState>()
-    const sliderActions = ref<SliderActions>()
-    const onSliderReady: SliderReadyHandler = (slider, state, actions) => {
-      isSliderReady.value = true
-      sliderElement.value = slider
-      sliderState.value = state
-      sliderActions.value = actions
-      sliderElement.value.on('needPanel', onLoadMore)
-    }
-
-    const prev = () => sliderActions.value?.prev()
-    const next = () => sliderActions.value?.next()
-    const prevPage = () => sliderActions.value?.prevPage()
-    const nextPage = () => sliderActions.value?.nextPage()
-
-    const onFilterChanged = (selection: any) => {
-      filterSelected.value = selection
-    }
+    const prev = () => actions.value?.prev()
+    const next = () => actions.value?.next()
+    const prevPage = () => actions.value?.prevPage()
+    const nextPage = () => actions.value?.nextPage()
 
     return {
-      filterSelected,
+      facets: Facets.toSelectItem(),
+      filterSelect,
       isReady,
       list,
-      fetchMore,
-      canFetchMore,
+      isFetching,
       isSliderReady,
       onSliderReady,
+      onVisibleChanged,
       prev,
       next,
       prevPage,
       nextPage,
-      onFilterChanged,
+      onFilter,
       error,
     }
   },

@@ -1,4 +1,6 @@
 
+.slider-image {}
+
 .img-blur {
   @apply box-border z-10 transition-opacity opacity-0 duration-600 delay-600 ease-in pointer-events-none;
 }

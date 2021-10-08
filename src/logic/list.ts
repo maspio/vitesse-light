@@ -1,12 +1,7 @@
-import { ref, computed } from 'vue-demi'
+import { ref } from 'vue-demi'
 
 export const useList = <T>(items: T[] = []) => {
   const list = ref(items)
-  const length = computed(() => list.value.length)
-  const at = (i: number) => list.value[i] as T
-  const first = computed(() => at(0))
-  const lastIndex = computed(() => list.value.length - 1)
-  const last = computed(() => at(lastIndex.value))
   const prepend = (...items: T[]) => {
     list.value.splice(0, 0, ...items as any)
   }
@@ -16,5 +11,5 @@ export const useList = <T>(items: T[] = []) => {
   const clear = () => {
     list.value.splice(0)
   }
-  return { list, length, at, first, lastIndex, last, prepend, append, clear }
+  return { list, prepend, append, clear }
 }

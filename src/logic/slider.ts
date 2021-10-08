@@ -1,14 +1,41 @@
 
-import { ref, computed, Ref } from 'vue-demi'
+import { ref, computed, Ref, toRefs, ToRefs } from 'vue-demi'
 // eslint-disable-next-line import/named
 import Flicking, { Status, Panel } from '@egjs/vue3-flicking'
 
+import { logger } from './log'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const log = logger('slider')
+
 export type SliderState = {
-  panels: Ref<Panel[] |undefined>
-  status: Ref<Status>
-  isMoving: Ref<boolean>
-  isNavigating: Ref<boolean>
-  isBusy: Ref<boolean>
+  panels: Array<any>
+  status: Status
+  isMoving: boolean
+  isNavigating: boolean
+  direction: 'PREV' | 'NEXT'
+}
+
+export type SliderPanel = {
+  index: number
+  loading: boolean
+  toggled: boolean
+  removed: boolean
+}
+
+export interface ArrayRange {
+  from: number
+  to: number
+  length: number
+  total: number
+  right: number
+}
+
+export const SliderStateDefault: SliderState = {
+  panels: [],
+  status: { panels: [] },
+  isMoving: false,
+  isNavigating: false,
+  direction: 'PREV',
 }
 
 export type SliderActions = {
@@ -19,13 +46,15 @@ export type SliderActions = {
   toPage: (index: number) => Promise<void>
 }
 
-export type SliderReadyHandler = (slider: Flicking, state: SliderState, actions: SliderActions, e: any) => void
+export type SliderReadyHandler = (slider: Flicking, state: ToRefs<SliderState>, actions: SliderActions, e: any) => void
 export type SliderSelectedHandler = (slider: Flicking, index: number, panel: Panel, e: any) => void
+export type SliderVisibleChangeHandler = (slides: SliderPanel[], range: ArrayRange) => void
 
 type Opts = {
   target?: Ref
   onReady?: SliderReadyHandler
   onSelect?: SliderSelectedHandler
+  onVisibleChanged?: SliderVisibleChangeHandler
 }
 
 const DefOpts: Opts = {
@@ -34,41 +63,40 @@ const DefOpts: Opts = {
 
 export const useSlider = (opts: Opts = DefOpts) => {
   const target = opts.target || ref<Flicking>()
-  const panels = ref<Panel[]>()
-  const status = ref<Status>({ panels: [] })
 
-  const isMoving = ref(false)
-  const isNavigating = ref(false)
-  const isBusy = computed(() => [isMoving.value, isNavigating.value].some(f => !!f))
+  const state = reactive(SliderStateDefault)
+  const isBusy = computed(() => [state.isMoving, state.isNavigating].some(f => !!f))
 
-  const state: SliderState = {
-    panels,
-    status,
-    isMoving,
-    isNavigating,
-    isBusy,
-  }
-
-  const visiblePanels = ref([{
-    index: -1,
-    loading: false,
-    toggled: false,
-    removed: false,
-  }])
+  const visiblePanels = ref<SliderPanel[]>([])
 
   const selectedIdx = ref<number>()
   const selectedPanel = ref<Panel>()
 
-  const onMoveStart = () => isMoving.value = true
-  const onMoveEnd = () => isMoving.value = false
+  const onMoveStart = (e: any) => {
+    state.isMoving = true
+    state.direction = e.direction
+  }
+  const onMoveEnd = () => {
+    state.isMoving = false
+  }
 
-  const onVisibleChange = (e: any) =>
-    visiblePanels.value = e.visiblePanels.map((p: any) => ({
+  const onVisibleChange = (e: any) => {
+    const vps = e.visiblePanels.map((p: any) => ({
       index: p._index as number,
       loading: p._loading as boolean,
       toggled: p._toggled as boolean,
       removed: p._removed as boolean,
     }))
+    visiblePanels.value = vps
+    const status: Status = target.value.getStatus()
+    if (!vps.length) return
+    const total = status.panels.length
+    const from = vps[0].index
+    const to = vps[vps.length - 1].index
+    const length = to - from
+    const right = total - to
+    if (opts.onVisibleChanged) opts.onVisibleChanged(visiblePanels.value, { from, to, length, total, right })
+  }
 
   const onSelect = (e: any) => {
     const index = e.index as number
@@ -80,11 +108,11 @@ export const useSlider = (opts: Opts = DefOpts) => {
 
   const execAsync = async (fn: () => Promise<any>) => {
     if (isBusy.value) return Promise.resolve()
-    isNavigating.value = true
+    state.isNavigating = true
     await fn().catch((e: any) => {
       console.error('execAsync', e)
     })
-    isNavigating.value = false
+    state.isNavigating = false
   }
 
   const prev = () => execAsync(target.value.prev)
@@ -120,8 +148,8 @@ export const useSlider = (opts: Opts = DefOpts) => {
     slider.on('moveStart', onMoveEnd)
     slider.on('visibleChange', onVisibleChange)
     slider.on('select', onSelect)
-    opts.onReady?.(target.value, state, actions, e)
+    opts.onReady?.(target.value, toRefs(state), actions, e)
   }
 
-  return { target, panels, status, onReady, isBusy, isMoving, isNavigating, visiblePanels, selectedIdx, selectedPanel, actions }
+  return { target, ...toRefs(state), onReady, isBusy, visiblePanels, selectedIdx, selectedPanel, actions }
 }

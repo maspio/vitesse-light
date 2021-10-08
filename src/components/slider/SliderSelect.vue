@@ -29,16 +29,27 @@ export default defineComponent({
       type: Array as PropType<SelectItem[]>,
       required: true,
     },
+    placeholder: {
+      type: String,
+      default: 'select',
+    },
   },
   emits: ['selection-changed'],
   setup(props, { emit }) {
     const id = ref(`select-${props.name.toLowerCase()}`)
     const description = ref(`Select ${props.name}`)
 
-    const selected = ref(props.items[0])
+    const placeholder = {
+      text: props.placeholder,
+      value: '',
+    }
+    // eslint-disable-next-line vue/no-mutating-props
+    props.items.splice(0, 0, placeholder)
+
+    const selected = ref(placeholder)
 
     const isSelected = (item: SelectItem) =>
-      item.value === selected.value.value
+      item.value === selected.value?.value
 
     watch(selected, (selection, _prev) => {
       emit('selection-changed', toJsonObect(selection))

@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue-demi'
 import Flicking from '@egjs/vue3-flicking'
-import { useSlider, SliderReadyHandler } from '~/logic/slider'
+import { useSlider, SliderReadyHandler, SliderVisibleChangeHandler } from '~/logic/slider'
 
 /**
  * Flicking
@@ -30,7 +30,7 @@ export default defineComponent({
       default: 'flicking w-full',
     },
   },
-  emits: ['ready', 'selected'],
+  emits: ['ready', 'selected', 'visible-changed'],
   setup(_props, { emit }) {
     const target = ref<Flicking>()
     const options = reactive({
@@ -48,7 +48,10 @@ export default defineComponent({
     const onReady: SliderReadyHandler = (slider, state, actions, e) => {
       emit('ready', slider, state, actions, e)
     }
-    const slider = useSlider({ target, onReady })
+    const onVisibleChanged: SliderVisibleChangeHandler = (panels, range) => {
+      emit('visible-changed', panels, range)
+    }
+    const slider = useSlider({ target, onReady, onVisibleChanged })
     return {
       ...slider,
       options,

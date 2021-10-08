@@ -5,6 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Bookslider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/Bookslider.vue')['default']
+    'Bookslider copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/Bookslider copy.vue')['default']
     CarbonMoon: typeof import('~icons/carbon/moon')['default']
     CarbonSun: typeof import('~icons/carbon/sun')['default']
     Card: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Card.vue')['default']
@@ -15,6 +16,7 @@ declare module 'vue' {
     Image: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/image/Image.vue')['default']
     ImgBlur: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/image/ImgBlur.vue')['default']
     ImgPic: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/image/ImgPic.vue')['default']
+    Loading: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Loading.vue')['default']
     PageSection: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/PageSection.vue')['default']
     Row: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Row.vue')['default']
     Slider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/Slider.vue')['default']
