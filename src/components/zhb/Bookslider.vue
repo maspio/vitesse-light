@@ -9,7 +9,7 @@
       </template>
       <template #default>
         <SliderSelect
-          :name="'filterSelect'"
+          :name="'filter'"
           placeholder="Alle Fachbereiche"
           :items="facets"
           @selection-changed="onFilter"
@@ -37,7 +37,7 @@
         }`"
         :style="`height: ${height}px;`"
         @ready="onSliderReady"
-        @visible-changed="onVisibleChanged"
+        @visible-changed="onRangeChanged"
       >
         <FixedRatio
           v-for="(item, index) in list"
@@ -60,9 +60,9 @@ import { throttledWatch } from '@vueuse/core'
 
 import {
   SliderActions,
-  SliderReadyHandler,
+  ReadyHandler,
   useFetchMore,
-  SliderVisibleChangeHandler,
+  RangeChangeHandler,
   ArrayRange,
 } from '~/logic/index'
 import { SelectItem, ShelfItem } from '~/types'
@@ -103,18 +103,19 @@ export default defineComponent({
     const url = computed(() => [props.apiUrl, query.value].filter(v => v).join('?'))
     // fetch more list
     const pageSize = ref(10)
-    const { list, canFetchMore, fetchMore, error, isFetching } = useFetchMore<ShelfItem>(url, { pageSize })
+    const { list, canFetchMore, fetchMore, error } = useFetchMore<ShelfItem>(url, { pageSize })
     const isListReady = computed(() => list.value.length > 0)
+
     // slider
     const isReady = computed(() => isSliderReady.value && isListReady.value)
     const actions = ref<SliderActions>()
-    const onSliderReady: SliderReadyHandler = (slider, state, a) => {
+    const onSliderReady: ReadyHandler = (_slider, a) => {
       isSliderReady.value = true
       actions.value = a
     }
     // visible range
     const vRange = ref<ArrayRange>({ from: 0, to: 0, length: 0, total: 0, right: 0 })
-    const onVisibleChanged: SliderVisibleChangeHandler = (panels, range) => {
+    const onRangeChanged: RangeChangeHandler = (range) => {
       vRange.value = range
     }
     // countdown trigger
@@ -138,22 +139,15 @@ export default defineComponent({
       }
     })
 
-    const prev = () => actions.value?.prev()
-    const next = () => actions.value?.next()
     const prevPage = () => actions.value?.prevPage()
     const nextPage = () => actions.value?.nextPage()
 
     return {
       facets: Facets.toSelectItem(),
-      filterSelect,
       isReady,
       list,
-      isFetching,
-      isSliderReady,
       onSliderReady,
-      onVisibleChanged,
-      prev,
-      next,
+      onRangeChanged,
       prevPage,
       nextPage,
       onFilter,

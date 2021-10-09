@@ -1,25 +1,15 @@
 
-import { ref, computed, Ref, toRefs, ToRefs } from 'vue-demi'
-// eslint-disable-next-line import/named
-import Flicking, { Status, Panel } from '@egjs/vue3-flicking'
+import { ref, Ref } from 'vue-demi'
 
-import { logger } from './log'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const log = logger('slider')
+// import { logger } from './log'
+// const log = logger('slider')
 
-export type SliderState = {
-  panels: Array<any>
-  status: Status
-  isMoving: boolean
-  isNavigating: boolean
-  direction: 'PREV' | 'NEXT'
-}
-
-export type SliderPanel = {
-  index: number
-  loading: boolean
-  toggled: boolean
-  removed: boolean
+type SliderStatus = {
+  index?: number
+  panels: Array<{
+    index: number
+    html?: string
+  }>
 }
 
 export interface ArrayRange {
@@ -30,13 +20,7 @@ export interface ArrayRange {
   right: number
 }
 
-export const SliderStateDefault: SliderState = {
-  panels: [],
-  status: { panels: [] },
-  isMoving: false,
-  isNavigating: false,
-  direction: 'PREV',
-}
+export const ArrayRangeDefault = { from: 0, to: 0, length: 0, total: 0, right: 0 }
 
 export type SliderActions = {
   prev: () => Promise<void>
@@ -46,15 +30,15 @@ export type SliderActions = {
   toPage: (index: number) => Promise<void>
 }
 
-export type SliderReadyHandler = (slider: Flicking, state: ToRefs<SliderState>, actions: SliderActions, e: any) => void
-export type SliderSelectedHandler = (slider: Flicking, index: number, panel: Panel, e: any) => void
-export type SliderVisibleChangeHandler = (slides: SliderPanel[], range: ArrayRange) => void
+export type ReadyHandler = (slider: HTMLElement, actions: SliderActions) => void
+export type SliderClickHandler = (index: number) => void
+export type RangeChangeHandler = (range: ArrayRange) => void
 
 type Opts = {
   target?: Ref
-  onReady?: SliderReadyHandler
-  onSelect?: SliderSelectedHandler
-  onVisibleChanged?: SliderVisibleChangeHandler
+  onReady?: ReadyHandler
+  onClick?: SliderClickHandler
+  onRangeChanged?: RangeChangeHandler
 }
 
 const DefOpts: Opts = {
@@ -62,70 +46,57 @@ const DefOpts: Opts = {
 }
 
 export const useSlider = (opts: Opts = DefOpts) => {
-  const target = opts.target || ref<Flicking>()
+  const target = opts.target || ref<HTMLElement>()
 
-  const state = reactive(SliderStateDefault)
-  const isBusy = computed(() => [state.isMoving, state.isNavigating].some(f => !!f))
-
-  const visiblePanels = ref<SliderPanel[]>([])
-
+  const navigating = ref(false)
+  const visible = ref<ArrayRange>(ArrayRangeDefault)
   const selectedIdx = ref<number>()
-  const selectedPanel = ref<Panel>()
 
-  const onMoveStart = (e: any) => {
-    state.isMoving = true
-    state.direction = e.direction
-  }
-  const onMoveEnd = () => {
-    state.isMoving = false
-  }
-
-  const onVisibleChange = (e: any) => {
+  const onRangeChanged = (e: any) => {
     const vps = e.visiblePanels.map((p: any) => ({
       index: p._index as number,
       loading: p._loading as boolean,
       toggled: p._toggled as boolean,
       removed: p._removed as boolean,
     }))
-    visiblePanels.value = vps
-    const status: Status = target.value.getStatus()
-    if (!vps.length) return
-    const total = status.panels.length
-    const from = vps[0].index
-    const to = vps[vps.length - 1].index
-    const length = to - from
-    const right = total - to
-    if (opts.onVisibleChanged) opts.onVisibleChanged(visiblePanels.value, { from, to, length, total, right })
+    if (vps.length) {
+      const status: SliderStatus = target.value.getStatus()
+      const total = status.panels.length
+      const from = vps[0].index
+      const to = vps[vps.length - 1].index
+      const length = to - from
+      const right = total - to
+      visible.value = { from, to, length, total, right }
+    }
+    if (opts.onRangeChanged) opts.onRangeChanged(visible.value)
   }
 
-  const onSelect = (e: any) => {
+  const onClick = (e: any) => {
     const index = e.index as number
-    const panel: any = e.panel
     selectedIdx.value = index
-    selectedPanel.value = panel
-    opts.onSelect?.(target.value, index, panel, e)
+    opts.onClick?.(index)
   }
 
   const execAsync = async (fn: () => Promise<any>) => {
-    if (isBusy.value) return Promise.resolve()
-    state.isNavigating = true
+    if (navigating.value) return Promise.resolve()
+    navigating.value = true
     await fn().catch((e: any) => {
       console.error('execAsync', e)
     })
-    state.isNavigating = false
+    navigating.value = false
   }
 
   const prev = () => execAsync(target.value.prev)
   const next = () => execAsync(target.value.next)
   const toPage = (index: number) => {
-    const status: Status = target.value.getStatus()
+    const status: SliderStatus = target.value.getStatus()
     if (Number.isNaN(status.index) || !status.panels.length) return Promise.resolve()
     return execAsync(() => target.value.moveTo(index))
   }
   const dirPage = (dir: -1 | 1 = 1) => {
-    const status: Status = target.value.getStatus()
+    const status: SliderStatus = target.value.getStatus()
     const idx = status.index || 0
-    const visLength = visiblePanels.value.length
+    const visLength = visible.value.length
     const idxDiff = Math.max(visLength - 1, 1)
     let nextIdx = idx + dir * idxDiff
     nextIdx = Math.min(Math.max(0, nextIdx), status.panels.length - 1)
@@ -142,14 +113,12 @@ export const useSlider = (opts: Opts = DefOpts) => {
     toPage,
   }
 
-  const onReady = (e: any) => {
-    const slider = target.value! as Flicking
-    slider.on('moveStart', onMoveStart)
-    slider.on('moveStart', onMoveEnd)
-    slider.on('visibleChange', onVisibleChange)
-    slider.on('select', onSelect)
-    opts.onReady?.(target.value, toRefs(state), actions, e)
+  const onReady = () => {
+    const slider = target.value
+    slider.on('visibleChange', onRangeChanged)
+    slider.on('select', onClick)
+    opts.onReady?.(target.value, actions)
   }
 
-  return { target, ...toRefs(state), onReady, isBusy, visiblePanels, selectedIdx, selectedPanel, actions }
+  return { target, onReady, visiblePanels: visible, selectedIdx, actions }
 }

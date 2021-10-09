@@ -12,13 +12,10 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue-demi'
 import Flicking from '@egjs/vue3-flicking'
-import { useSlider, SliderReadyHandler, SliderVisibleChangeHandler } from '~/logic/slider'
+import { useSlider } from '~/logic/slider'
 
 /**
- * Flicking
- * api: https://naver.github.io/egjs-flicking/docs/api/Flicking
- * options: https://naver.github.io/egjs-flicking/Options
- * demo: https://naver.github.io/egjs-flicking/Demos
+ * https://naver.github.io/egjs-flicking/docs/api/Flicking
  */
 export default defineComponent({
   components: {
@@ -32,7 +29,7 @@ export default defineComponent({
   },
   emits: ['ready', 'selected', 'visible-changed'],
   setup(_props, { emit }) {
-    const target = ref<Flicking>()
+    const target = ref<HTMLElement>()
     const options = reactive({
       align: 'prev',
       gap: 10,
@@ -45,13 +42,12 @@ export default defineComponent({
       renderOnlyVisible: true,
       inputType: ['touch', 'mouse'],
     })
-    const onReady: SliderReadyHandler = (slider, state, actions, e) => {
-      emit('ready', slider, state, actions, e)
-    }
-    const onVisibleChanged: SliderVisibleChangeHandler = (panels, range) => {
-      emit('visible-changed', panels, range)
-    }
-    const slider = useSlider({ target, onReady, onVisibleChanged })
+
+    const slider = useSlider({
+      target,
+      onReady: (slider, actions) => emit('ready', slider, actions),
+      onRangeChanged: range => emit('visible-changed', range),
+    })
     return {
       ...slider,
       options,
