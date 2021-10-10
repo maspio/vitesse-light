@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue-demi'
 import { isDark, toggleDark } from '~/logic/misc/dark'
 
 export default defineComponent({

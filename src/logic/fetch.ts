@@ -25,7 +25,11 @@ export const useFetchMore = <T>(baseUrl: Ref<string>, options?: FetchMoreOptions
     return `${baseUrl.value}${prefix}offset=${offset.value}&limit=${limit.value}`
   })
   const fetchUrl = ref(url.value)
-  const { data, error, isFetching } = useFetch<T>(fetchUrl, {}, { refetch: true, beforeFetch: ctx => log.info('fetch', ctx.url) }).get().json()
+  const { data, error, isFetching } = useFetch<T>(fetchUrl, {}, {
+    refetch: true,
+    immediate: false,
+    beforeFetch: ctx => log.info('fetch', ctx.url),
+  }).get().json()
 
   const { list, append, clear } = useList<T>()
   watch(data, (newData) => {
@@ -41,14 +45,17 @@ export const useFetchMore = <T>(baseUrl: Ref<string>, options?: FetchMoreOptions
   const canFetchMore = computed(() => {
     return list.value.length < total.value
   })
+  const canFetch = computed(() => !isFetching.value && canFetchMore.value)
+  const fetch = () => fetchUrl.value = url.value
   const fetchMore = () => {
-    if (canFetchMore.value) {
+    if (canFetch.value) {
       offset.value = offset.value + opts.pageSize!.value
-      fetchUrl.value = url.value
+      fetch()
     }
     else {
-      log.warn(`cannot fetch more than total ${total.value}`)
+      if (!canFetchMore.value)
+        log.warn(`cannot fetch more loaded=${list.value.length} total=${total.value}`)
     }
   }
-  return { fetchUrl: url, list, canFetchMore, fetchMore, isFetching, error }
+  return { fetchUrl: url, list, canFetch, canFetchMore, fetch, fetchMore, isFetching, error }
 }

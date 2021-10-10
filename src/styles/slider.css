@@ -20,6 +20,14 @@
   @apply px-2 -mx-2;
 }
 
+.bookslider {
+  @apply space-y-4 w-full;
+}
+
+.slider {
+  @apply w-full;
+}
+
 .slider-panel {
   @apply bg-transparent rounded-lg shadow-md mr-4 mb-3 shadow-dark-900 inline-block;
 }

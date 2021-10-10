@@ -1,5 +1,5 @@
 // register vue composition api globally
-import { createApp } from 'vue'
+import { createApp } from 'vue-demi'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from 'virtual:generated-pages'
 import App from './App.vue'

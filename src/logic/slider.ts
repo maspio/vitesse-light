@@ -93,13 +93,13 @@ export const useSlider = (opts: Opts = DefOpts) => {
     if (Number.isNaN(status.index) || !status.panels.length) return Promise.resolve()
     return execAsync(() => target.value.moveTo(index))
   }
+  const clamp = (v: number, min: number, max: number) => Math.min(Math.max(min, v), max)
   const dirPage = (dir: -1 | 1 = 1) => {
     const status: SliderStatus = target.value.getStatus()
-    const idx = status.index || 0
     const visLength = visible.value.length
-    const idxDiff = Math.max(visLength - 1, 1)
-    let nextIdx = idx + dir * idxDiff
-    nextIdx = Math.min(Math.max(0, nextIdx), status.panels.length - 1)
+    const idx = status.index || 0
+    const maxIdx = status.panels.length - 1
+    const nextIdx = clamp(idx + dir * visLength, 0, maxIdx)
     return toPage(nextIdx)
   }
   const prevPage = () => dirPage(-1)

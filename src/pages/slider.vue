@@ -11,8 +11,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import PageSection from '~/components/misc/PageSection.vue'
+import { defineComponent } from 'vue-demi'
+import PageSection from '~/components/demo/PageSection.vue'
 
 export default defineComponent({
   components: { PageSection },

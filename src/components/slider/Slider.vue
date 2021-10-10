@@ -2,7 +2,7 @@
   <Flicking
     ref="target"
     :options="options"
-    :class="classes"
+    :class="`flicking ${classes}`"
     @ready="onReady"
   >
     <slot></slot>
@@ -24,7 +24,7 @@ export default defineComponent({
   props: {
     classes: {
       type: String,
-      default: 'flicking w-full',
+      required: false,
     },
   },
   emits: ['ready', 'selected', 'visible-changed'],
@@ -32,15 +32,13 @@ export default defineComponent({
     const target = ref<HTMLElement>()
     const options = reactive({
       align: 'prev',
-      gap: 10,
       bound: true,
-      lastIndex: 80,
-      infinite: true,
-      horizontal: true,
-      needPanelThreshold: 6,
+      // lastIndex: 80,
+      autoResize: true,
       moveType: 'snap',
       renderOnlyVisible: true,
-      inputType: ['touch', 'mouse'],
+      inputType: ['pointer'],
+      collectStatistics: false,
     })
 
     const slider = useSlider({
