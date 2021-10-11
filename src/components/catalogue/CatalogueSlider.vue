@@ -56,3 +56,7 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+@import "../../styles/slider/slider.css";
+</style>

@@ -165,7 +165,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style>
-@import "../../styles/slider.css";
-</style>
