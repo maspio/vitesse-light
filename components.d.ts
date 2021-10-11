@@ -13,6 +13,8 @@ declare module 'vue' {
     CatalogueCollectionSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/catalogue/CatalogueCollectionSlider.vue')['default']
     CatalogueSearchSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/catalogue/CatalogueSearchSlider.vue')['default']
     CatalogueSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/catalogue/CatalogueSlider.vue')['default']
+    'CatalogueSlider copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/catalogue/CatalogueSlider copy.vue')['default']
+    'CatalogueSlider.ce': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/catalogue/CatalogueSlider.ce.vue')['default']
     CollectionSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/CollectionSlider.vue')['default']
     'CollectionSlider copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/CollectionSlider copy.vue')['default']
     DarkToggle: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/demo/DarkToggle.vue')['default']
