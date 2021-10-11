@@ -8,6 +8,7 @@ import App from './App.vue'
 import 'virtual:windi-base.css'
 import 'virtual:windi-components.css'
 import './styles/main.css'
+import './styles/slider/slider.css'
 import 'virtual:windi-utilities.css'
 
 const app = createApp(App)
