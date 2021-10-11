@@ -6,12 +6,15 @@ export type SizeWH = {
 export type SizeCss = {
   width: string
   height: string
+  [key: string]: any;
 }
 
 const toCss = (size: SizeWH): SizeCss => {
   return {
     width: `${size.width}px`,
     height: `${size.height}px`,
+    ['content-visibility']: `auto`,
+    ['contain-intrinsic-size']: `${size.width}px ${size.height}px`
   }
 }
 

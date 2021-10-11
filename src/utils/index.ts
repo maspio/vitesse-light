@@ -1,4 +1,5 @@
 export * from './size'
 export * from './ratio'
+export * from './obj'
 export * from './view'
 export * from './search'

@@ -7,25 +7,21 @@
 
 @import "@egjs/vue3-flicking/dist/flicking.css";
 
-.transition-opacity {
-  @apply transition-opacity duration-400 ease-in;
-}
 
-
-.animate-hover {
-  @apply transition-transform duration-500 ease-in-out transform hover:scale-102;
-}
-
-.outer-space-x-2 {
-  @apply px-2 -mx-2;
-}
-
-.bookslider {
+.slider-root {
   @apply space-y-4 w-full;
 }
 
 .slider {
-  @apply w-full;
+  @apply w-full transition-opacity duration-400 delay-400 ease-in;
+}
+
+.slider-loaded {
+  @apply opacity-100;
+}
+
+.slider-loading {
+  @apply opacity-0;
 }
 
 .slider-panel {
@@ -39,9 +35,6 @@
    @apply text-base tracking-wider font-medium truncate hyphens-none;
 }
 
-.slider-border {
-  @apply bg-white border border-gray-300;
-}
 
 .slider-no-border {
   @apply border-none border-transparent focus:(border-none border-transparent) ;

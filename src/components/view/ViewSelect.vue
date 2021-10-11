@@ -15,7 +15,7 @@ import { defineComponent, ref, computed, watch } from 'vue-demi'
 import { SelectItem, View } from '~/types'
 import { viewToSelectItem } from '~/utils'
 import { useFetchViews } from '~/logic'
-import { toJsonObect } from '~/logic/utils/obj'
+import { toJsonObect } from '~/utils'
 
 export default defineComponent({
   props: {

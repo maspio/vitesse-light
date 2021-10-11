@@ -1,5 +1,5 @@
 <template>
-  <div ref="target" class="bookslider">
+  <div ref="target" class="slider-root">
     <!-- Header -->
     <SliderHeader
       :title="title"
@@ -15,7 +15,7 @@
       </template>
     </SliderHeader>
     <!-- Slider -->
-    <div :style="`height: ${vHeight}px; `">
+    <div :style="`height: ${vHeight}px;`">
       <div v-if="error" class="slider-center">
         {{ error }}
       </div>
@@ -23,10 +23,8 @@
         <Loading></Loading>
       </div>
       <Slider
-        :classes="`slider transition-opacity ${
-          isReady ? 'opacity-100' : 'opacity-0'
-        }`"
-        :style="`height: ${vHeight}px;`"
+        :classes="`slider ${isReady ? 'slider-loaded' : 'slider-loading'}`"
+        :style="`height: ${vHeight}px; content-visibility: auto; contain-intrinsic-size: 0 ${vHeight}px;`"
         @ready="onSliderReady"
         @visible-changed="onRangeChanged"
       >
@@ -122,7 +120,7 @@ export default defineComponent({
     watchOnce(and(isVisible, pageSize, viewId), () => fetch())
 
     // slider
-    const isReady = computed(() => isSliderReady.value && list.value.length > 0)
+    const isReady = computed(() => isVisible.value && isSliderReady.value && list.value.length > 0)
     const actions = ref<SliderActions>()
     const onSliderReady: ReadyHandler = (_slider, a) => {
       isSliderReady.value = true
@@ -152,6 +150,7 @@ export default defineComponent({
     }, { debounce: 500, immediate: false })
 
     return {
+      isVisible,
       vHeight,
       target,
       isReady,
