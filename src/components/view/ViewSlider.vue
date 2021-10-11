@@ -49,6 +49,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue-demi'
 import { and, throttledWatch, debouncedWatch, useElementVisibility, useElementSize } from '@vueuse/core'
+import { logger } from '~/logic'
 import {
   SliderActions,
   ReadyHandler,
@@ -57,6 +58,7 @@ import {
   ArrayRange,
 } from '~/logic/index'
 import { ShelfItem, View, Filter } from '~/types'
+const log = logger('slider')
 
 const toInt = (value: string | number | boolean | undefined, def: number): number => {
   if (typeof value === 'undefined') return def
@@ -96,8 +98,6 @@ export default defineComponent({
     // views
     const vHeight = computed(() => toInt(props.height, 300))
     const viewId = computed(() => props.view ? props.view.id : '')
-    // eslint-disable-next-line no-console
-    const onView = (v: any) => console.log('view selected', v)
     // state
     const target = ref<HTMLElement>()
     const isVisible = useElementVisibility(target)
@@ -110,8 +110,7 @@ export default defineComponent({
       if (!w || !h) return
       pageSize.value = Math.max(1, Math.min(6, Math.ceil(w / h * 0.8))) * 5
     }, { debounce: 200 })
-    // eslint-disable-next-line no-console
-    watch(pageSize, () => console.info('size', { w: Math.floor(width.value), h: Math.floor(height.value), pageSize: pageSize.value }))
+    watch(pageSize, () => log.info('size', { w: Math.floor(width.value), h: Math.floor(height.value), pageSize: pageSize.value }))
 
     // url query
     const queryFilter = computed(() => props.filter ? `filter=${props.filter.identifier}:${props.filter.value}` : '')
@@ -154,7 +153,6 @@ export default defineComponent({
 
     return {
       vHeight,
-      onView,
       target,
       isReady,
       list,

@@ -7,7 +7,7 @@
     :api-url="apiUrl"
     :api-token="apiToken"
   >
-    <ViewFilterSelect @selected="onFilter"></ViewFilterSelect>
+    <ViewFilterSelect :view-id="view.id" :api-url="apiUrl" placeholder="Alle Fachbereiche" @selected="onFilter"></ViewFilterSelect>
   </ViewSlider>
 </template>
 

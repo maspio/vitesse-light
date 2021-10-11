@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable no-console */
 import { defineComponent } from 'vue-demi'
 import { SelectItem, View } from '~/types'
 import { viewToSelectItem } from '~/utils'

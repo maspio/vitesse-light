@@ -16,7 +16,7 @@ export const useFetchViews = (props: FetchViewsProps) => {
   const query = computed(() => [types.value, ids.value].filter(v => v).join('&'))
   const url = computed(() => [`${props.apiUrl}/views`, query.value].filter(v => v).join('?'))
   // fetch
-  const { data } = useFetch<{views: View[]}>(url, {}, { refetch: true }).json()
+  const { data } = useFetch<{ views: View[] }>(url, {}, { refetch: true }).json()
   watch(data, (d) => {
     if (d && d.views && d.views.length)
       views.value = d.views
@@ -30,15 +30,15 @@ type FetchViewFacetsProps = {
 }
 
 export const useFetchViewFacets = (props: FetchViewFacetsProps) => {
-  // views
-  const views = ref<Facet[]>([])
+  // facets
+  const facets = ref<Facet[]>([])
   // url
-  const url = computed(() => [props.apiUrl, props.viewId].filter(v => v).join('/'))
+  const url = computed(() => `${props.apiUrl}/views/${props.viewId}/facets`)
   // fetch
-  const { data } = useFetch<{views: View[]}>(url, {}, { refetch: true }).json()
+  const { data } = useFetch<{ facets: Facet[] }>(url, {}, { refetch: true }).json()
   watch(data, (d) => {
-    if (d && d.views && d.views.length)
-      views.value = d.views
+    if (d && d.facets && d.facets.length)
+      facets.value = d.facets
   })
-  return { views, url }
+  return { facets, url }
 }

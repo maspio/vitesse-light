@@ -9,7 +9,6 @@
     "@egjs/vue3-flicking": "^4.3.0",
     "@picibird/blurhash-ts": "^1.1.6",
     "@vueuse/core": "^6.5.3",
-    "debug": "^4.3.2",
     "vue": "^3.2.19",
     "vue-demi": "^0.11.4",
     "vue-router": "^4.0.11"
@@ -17,7 +16,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
     "@iconify-json/carbon": "^1.0.3",
-    "@types/debug": "^4.1.7",
     "@types/node": "^16.10.2",
     "@vitejs/plugin-vue": "^1.9.2",
     "cross-env": "^7.0.3",

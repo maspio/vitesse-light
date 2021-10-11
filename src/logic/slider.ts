@@ -1,8 +1,8 @@
 
 import { ref, Ref } from 'vue-demi'
 
-// import { logger } from './log'
-// const log = logger('slider')
+import { logger } from './log'
+const log = logger('slider')
 
 type SliderStatus = {
   index?: number
@@ -81,7 +81,7 @@ export const useSlider = (opts: Opts = DefOpts) => {
     if (navigating.value) return Promise.resolve()
     navigating.value = true
     await fn().catch((e: any) => {
-      console.error('execAsync', e)
+      log.error('execAsync', e)
     })
     navigating.value = false
   }

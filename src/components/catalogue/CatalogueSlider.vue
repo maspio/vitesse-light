@@ -10,7 +10,7 @@
     <template #left>
       <ViewSelect :api-url="apiUrl" :view-types="viewTypes" :view-ids="viewIds" @selected="onView"></ViewSelect>
     </template>
-    <ViewFilterSelect v-if="isSearchType" @selected="onFilter"></ViewFilterSelect>
+    <ViewFilterSelect v-if="isSearchType" :view-id="view.id" :api-url="apiUrl" placeholder="Alle Fachbereiche" @selected="onFilter"></ViewFilterSelect>
   </ViewSlider>
 </template>
 
