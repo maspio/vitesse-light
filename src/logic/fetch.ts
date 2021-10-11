@@ -28,7 +28,7 @@ export const useFetchMore = <T>(baseUrl: Ref<string>, options?: FetchMoreOptions
   const { data, error, isFetching } = useFetch<T>(fetchUrl, {}, {
     refetch: true,
     immediate: false,
-    beforeFetch: ctx => log.info('fetch', ctx.url),
+    beforeFetch: ctx => log.info(ctx.url),
   }).get().json()
 
   const { list, append, clear } = useList<T>()

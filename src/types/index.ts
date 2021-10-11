@@ -1,4 +1,5 @@
 export * from './image'
+export * from './view'
 export * from './api'
 export * from './select'
 export * from './shelf'

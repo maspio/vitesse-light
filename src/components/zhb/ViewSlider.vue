@@ -6,12 +6,12 @@
       @previous="prevPage"
       @next="nextPage"
     >
-      <SliderSelect
+      <SingleSelect
         :name="'filter'"
         placeholder="Alle Fachbereiche"
         :items="facets"
-        @selection-changed="onFilter"
-      ></SliderSelect>
+        @selected="onFilter"
+      ></SingleSelect>
     </SliderHeader>
     <!-- Slider -->
     <div :style="`height: ${height}px; `">
@@ -57,6 +57,7 @@ import {
 } from '~/logic/index'
 import { SelectItem, ShelfItem } from '~/types'
 import { Facets } from '~/logic/mock'
+import { facetToSelectItems } from '~/utils'
 
 export default defineComponent({
   props: {
@@ -68,13 +69,17 @@ export default defineComponent({
       type: Number,
       default: 300,
     },
+    viewTypes: {
+      type: String,
+      required: false,
+    },
     viewIds: {
       type: String,
       required: false,
     },
     apiUrl: {
       type: String,
-      default: 'http://localhost/api/views/pMwkLFaq/fetch',
+      default: 'http://localhost/api/views',
     },
     apiToken: {
       type: String,
@@ -82,9 +87,11 @@ export default defineComponent({
     },
   },
   setup(props) {
+    // state
     const target = ref<HTMLElement>()
     const isVisible = useElementVisibility(target)
     const { width, height } = useElementSize(target)
+    const isSliderReady = ref(false)
     const pageSize = ref(0)
     debouncedWatch(width, () => {
       const w = Math.floor(width.value)
@@ -94,8 +101,6 @@ export default defineComponent({
     }, { debounce: 200 })
     // eslint-disable-next-line no-console
     watch(pageSize, () => console.info('size', { w: Math.floor(width.value), h: Math.floor(height.value), pageSize: pageSize.value }))
-    // state
-    const isSliderReady = ref(false)
     // filter
     const filterSelect = ref<SelectItem | null>(null)
     const filter = computed(() => filterSelect.value?.value)
@@ -104,7 +109,7 @@ export default defineComponent({
     const queryFilter = computed(() => filter.value ? `filter=department:${filter.value}` : '')
     const queryToken = computed(() => props.apiToken ? `token=${props.apiToken}` : '')
     const query = computed(() => [queryFilter.value, queryToken.value].filter(v => v).join('&'))
-    const url = computed(() => [props.apiUrl, query.value].filter(v => v).join('?'))
+    const url = computed(() => [`${props.apiUrl}/pMwkLFaq/fetch`, query.value].filter(v => v).join('?'))
     // fetch more list
     const { list, fetch, fetchMore, error } = useFetchMore<ShelfItem>(url, { pageSize })
     watchOnce(and(isVisible, pageSize), () => fetch())
@@ -141,7 +146,7 @@ export default defineComponent({
 
     return {
       target,
-      facets: Facets.toSelectItem(),
+      facets: facetToSelectItems(Facets.zhbFacets.facets[0]),
       isReady,
       list,
       onSliderReady,

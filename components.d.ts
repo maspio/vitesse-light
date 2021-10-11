@@ -19,6 +19,7 @@ declare module 'vue' {
     Loading: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Loading.vue')['default']
     PageSection: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/demo/PageSection.vue')['default']
     Row: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Row.vue')['default']
+    SingleSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/SingleSelect.vue')['default']
     Slider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/Slider.vue')['default']
     SliderButton: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderButton.vue')['default']
     SliderFilter: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderFilter.vue')['default']
@@ -28,6 +29,8 @@ declare module 'vue' {
     SliderRow: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderRow.vue')['default']
     SliderSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderSelect.vue')['default']
     Snip: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Snip.vue')['default']
+    ViewSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/ViewSelect.vue')['default']
+    ViewSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/ViewSlider.vue')['default']
   }
 }
 

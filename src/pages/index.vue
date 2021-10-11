@@ -7,6 +7,10 @@
             ZHB Bookslider
           </h1>
         </template>
+        <template #default>
+          <!-- <view-select view-types="collection" view-ids="81238727660005505,81238729470005505" @selected="onView"></view-select> -->
+          <view-select @selected="onView"></view-select>
+        </template>
         <template #right>
           <dark-toggle></dark-toggle>
         </template>
@@ -14,19 +18,19 @@
     </page-section>
     <!-- <div style="height: 100vh"></div> -->
     <page-section>
-      <Bookslider title="Neuerwerbungen"></Bookslider>
+      <ViewSlider title="Neuerwerbungen" view-types="collection" view-ids="81238727660005505,81238729470005505"></ViewSlider>
     </page-section>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue-demi'
-import PageSection from '~/components/demo/PageSection.vue'
 
 export default defineComponent({
-  components: { PageSection },
   setup() {
-    return {}
+    // eslint-disable-next-line no-console
+    const onView = (v: any) => console.log('view selected', v)
+    return { onView }
   },
 })
 </script>

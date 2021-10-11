@@ -9,8 +9,8 @@
 
 type LogFn = (msg?: any, ...optParams: any[]) => void
 
-const scoped = (logFn: LogFn, delimiter = ':', ...scopes: string[]) => {
-  const prefix = scopes.join(delimiter)
+const scoped = (logFn: LogFn, ...scopes: string[]) => {
+  const prefix = scopes.join(':')
   return (msg?: any, ...optParams: any[]) => logFn(`${prefix} ${msg}`, ...optParams)
 }
 
