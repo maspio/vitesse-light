@@ -107,8 +107,8 @@ export default defineComponent({
       const h = Math.floor(height.value)
       if (!w || !h) return
       pageSize.value = Math.max(1, Math.min(6, Math.ceil(w / h * 0.8))) * 5
+      log.info('size', { w, h, pageSize: pageSize.value })
     }, { debounce: 200 })
-    watch(pageSize, () => log.info('size', { w: Math.floor(width.value), h: Math.floor(height.value), pageSize: pageSize.value }))
 
     // url query
     const queryFilter = computed(() => props.filter ? `filter=${props.filter.identifier}:${props.filter.value}` : '')
