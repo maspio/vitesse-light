@@ -1,6 +1,6 @@
 
 .slider-buttons {
-  @apply z-0 relative inline-flex flex-nowrap;
+  @apply z-0 relative inline-flex flex-nowrap hidden sm:block;
 }
 
 .slider-button {

@@ -14,7 +14,6 @@
     <template #right>
       <slot name="right">
         <SliderButton
-          class="hidden sm:block"
           @clickprevious="$emit('previous')"
           @clicknext="$emit('next')"
         ></SliderButton>

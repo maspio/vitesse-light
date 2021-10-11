@@ -8,6 +8,7 @@ export interface ShelfItem {
   publisher: string
   isbn: string[]
   image: ImageSource
+  link?: string
   series?: string
   edition?: string
   coverUrl?: string

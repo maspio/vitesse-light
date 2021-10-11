@@ -1,6 +1,6 @@
 # ZHB Bookslider
 
-## Links to Catalog Webseite
+## Links to Catalogue Webseite
 
 Hier der Link zu der Obercollection (für den Button „weitere“):
 https://slsp-rzs.primo.exlibrisgroup.com/discovery/collectionDiscovery?vid=41SLSP_RZS:VU15&collectionId=81238729950005505

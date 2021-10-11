@@ -7,7 +7,9 @@
     :api-url="apiUrl"
     :api-token="apiToken"
   >
-    <ViewSelect :view-types="viewTypes" :view-ids="viewIds" @selected="onView"></ViewSelect>
+    <template #left>
+      <ViewSelect :view-types="viewTypes" :view-ids="viewIds" @selected="onView"></ViewSelect>
+    </template>
     <ViewFilterSelect v-if="isSearchType" @selected="onFilter"></ViewFilterSelect>
   </ViewSlider>
 </template>

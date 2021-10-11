@@ -1,6 +1,6 @@
 <template>
   <div class="slider-row">
-    <div v-if="hasLeft || Left" :class="`slider-row ${classLeft} slider-row-left`">
+    <div v-if="hasLeft || growLeft" :class="`slider-row ${classLeft} slider-row-left`">
       <slot name="left">
       </slot>
     </div>

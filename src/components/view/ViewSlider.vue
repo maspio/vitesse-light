@@ -36,9 +36,10 @@
           v-slot="{ size }"
           :length="height - 12"
           :ratio="item.image.ratio"
-          :classes="`slider-panel`"
+          :classes="`relative-full-size slider-panel`"
         >
           <Image :image="item.image" :size="size"></Image>
+          <ViewLink :item="item"></ViewLink>
         </FixedRatio>
       </Slider>
     </div>

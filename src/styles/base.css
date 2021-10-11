@@ -9,3 +9,7 @@
 .absolute-full-size {
   @apply box-border absolute left-0 top-0 right-0 bottom-0 rounded-lg;
 }
+
+.absolute-bottom-right {
+  @apply box-border absolute right-3 bottom-2 rounded-lg float-right;
+}

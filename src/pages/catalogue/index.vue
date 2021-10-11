@@ -1,6 +1,6 @@
 <template>
   <PageLayout>
-    <catalogue-slider title="Neuerscheinungen"></catalogue-slider>
+    <catalogue-slider></catalogue-slider>
   </PageLayout>
 </template>
 

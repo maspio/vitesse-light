@@ -34,13 +34,18 @@ declare module 'vue' {
     SliderHeader: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderHeader.vue')['default']
     SliderIcon: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderIcon.vue')['default']
     SliderIconButton: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderIconButton.vue')['default']
+    SliderLink: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/SliderLink.vue')['default']
     SliderRow: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderRow.vue')['default']
     SliderSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderSelect.vue')['default']
     Snip: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Snip.vue')['default']
+    SvgIcon: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/SvgIcon.vue')['default']
     ViewFilterSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/ViewFilterSelect.vue')['default']
+    ViewLink: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/ViewLink.vue')['default']
+    ViewLinkIcon: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/ViewLinkIcon.vue')['default']
     ViewSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/ViewSelect.vue')['default']
     'ViewSelect copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/ViewSelect copy.vue')['default']
     ViewSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/ViewSlider.vue')['default']
+    ViewWebLink: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/view/ViewWebLink.vue')['default']
   }
 }
 
