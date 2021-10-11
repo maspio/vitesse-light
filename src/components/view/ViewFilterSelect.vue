@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue-demi'
+import { defineComponent, ref, computed, watch } from 'vue-demi'
 import { useFetchViewFacets } from '~/logic'
 import { SelectItem } from '~/types'
 import { facetToSelectItems, selectItemToFacetEntry, facetEntryToFitler } from '~/utils'

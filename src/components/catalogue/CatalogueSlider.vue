@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue-demi'
+import { defineComponent, ref, computed } from 'vue-demi'
 import { Filter, View } from '~/types'
 
 export default defineComponent({

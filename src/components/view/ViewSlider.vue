@@ -47,8 +47,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue-demi'
-import { and, throttledWatch, debouncedWatch, useElementVisibility, useElementSize } from '@vueuse/core'
+import { defineComponent, PropType, ref, computed, watch } from 'vue-demi'
+import { and, throttledWatch, debouncedWatch, useElementVisibility, useElementSize, watchOnce } from '@vueuse/core'
 import { logger } from '~/logic'
 import {
   SliderActions,

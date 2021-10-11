@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue-demi'
+import { defineComponent, ref, computed, watch } from 'vue-demi'
 import { SelectItem, View } from '~/types'
 import { viewToSelectItem } from '~/utils'
 import { useFetchViews } from '~/logic'

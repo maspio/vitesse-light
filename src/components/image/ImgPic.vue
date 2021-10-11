@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watchEffect } from 'vue-demi'
+import { defineComponent, PropType, ref, computed, watchEffect } from 'vue-demi'
 import { SizeWH, Size } from '~/utils'
 import { ImageSource } from '~/types/image'
 
