@@ -65,7 +65,7 @@ export default defineComponent({
     },
     height: {
       type: Number,
-      default: 300,
+      required: true,
     },
     view: {
       type: Object as PropType<View>,
@@ -77,7 +77,7 @@ export default defineComponent({
     },
     apiUrl: {
       type: String,
-      default: 'http://localhost/api/views',
+      required: true,
     },
     apiToken: {
       type: String,

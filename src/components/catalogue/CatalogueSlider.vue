@@ -1,7 +1,14 @@
 <template>
-  <ViewSlider :title="title" :view="view" :filter="filter">
+  <ViewSlider
+    :title="title"
+    :height="height"
+    :view="view"
+    :filter="filter"
+    :api-url="apiUrl"
+    :api-token="apiToken"
+  >
     <ViewSelect :view-types="viewTypes" :view-ids="viewIds" @selected="onView"></ViewSelect>
-    <FilterSelect v-if="isSearchType" @selected="onFilter"></FilterSelect>
+    <ViewFilterSelect v-if="isSearchType" @selected="onFilter"></ViewFilterSelect>
   </ViewSlider>
 </template>
 
@@ -15,6 +22,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    height: {
+      type: Number,
+      default: 300,
+    },
     viewTypes: {
       type: String,
       required: false,
@@ -22,6 +33,14 @@ export default defineComponent({
     viewIds: {
       type: String,
       required: false,
+    },
+    apiUrl: {
+      type: String,
+      default: 'http://localhost/api/v1/views',
+    },
+    apiToken: {
+      type: String,
+      default: '',
     },
   },
   setup() {
