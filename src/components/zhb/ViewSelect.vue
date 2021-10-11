@@ -13,7 +13,7 @@
 <script lang="ts">
 /* eslint-disable no-console */
 import { defineComponent } from 'vue-demi'
-import { SelectItem } from '~/types'
+import { SelectItem, View } from '~/types'
 import { viewToSelectItem } from '~/utils'
 import { useFetchViews } from '~/logic'
 import { toJsonObect } from '~/logic/utils/obj'
@@ -40,11 +40,17 @@ export default defineComponent({
     // select
     const items = computed<SelectItem[]>(() => views.value.map(viewToSelectItem))
     const selected = ref<SelectItem>()
-    watch(views, (v) => { if (v && v.length) selected.value = viewToSelectItem(v[0]) })
+    const view = ref<View>()
+    watch(views, (v) => {
+      if (v && v.length) {
+        view.value = v[0]
+        selected.value = viewToSelectItem(v[0])
+      }
+    })
+    watch(view, v => emit('selected', v))
     // event
     const onSelection = (item: SelectItem) => {
-      const v = toJsonObect(views.value.find(v => v.id === item.value))
-      emit('selected', v)
+      view.value = toJsonObect(views.value.find(v => v.id === item.value))
     }
     return { items, selected, onSelection }
   },

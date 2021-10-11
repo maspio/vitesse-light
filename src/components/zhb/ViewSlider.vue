@@ -6,12 +6,13 @@
       @previous="prevPage"
       @next="nextPage"
     >
-      <SingleSelect
-        :name="'filter'"
-        placeholder="Alle Fachbereiche"
-        :items="facets"
-        @selected="onFilter"
-      ></SingleSelect>
+      <template #left>
+        <slot name="left"></slot>
+      </template>
+      <template #default>
+        <slot>
+        </slot>
+      </template>
     </SliderHeader>
     <!-- Slider -->
     <div :style="`height: ${height}px; `">
@@ -45,9 +46,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue-demi'
+import { defineComponent, PropType, ref } from 'vue-demi'
 import { and, throttledWatch, debouncedWatch, useElementVisibility, useElementSize } from '@vueuse/core'
-
 import {
   SliderActions,
   ReadyHandler,
@@ -55,9 +55,7 @@ import {
   RangeChangeHandler,
   ArrayRange,
 } from '~/logic/index'
-import { SelectItem, ShelfItem } from '~/types'
-import { Facets } from '~/logic/mock'
-import { facetToSelectItems } from '~/utils'
+import { ShelfItem, View, Filter } from '~/types'
 
 export default defineComponent({
   props: {
@@ -69,12 +67,12 @@ export default defineComponent({
       type: Number,
       default: 300,
     },
-    viewTypes: {
-      type: String,
+    view: {
+      type: Object as PropType<View>,
       required: false,
     },
-    viewIds: {
-      type: String,
+    filter: {
+      type: Object as PropType<Filter>,
       required: false,
     },
     apiUrl: {
@@ -87,6 +85,10 @@ export default defineComponent({
     },
   },
   setup(props) {
+    // views
+    const viewId = computed(() => props.view ? props.view.id : '')
+    // eslint-disable-next-line no-console
+    const onView = (v: any) => console.log('view selected', v)
     // state
     const target = ref<HTMLElement>()
     const isVisible = useElementVisibility(target)
@@ -101,18 +103,15 @@ export default defineComponent({
     }, { debounce: 200 })
     // eslint-disable-next-line no-console
     watch(pageSize, () => console.info('size', { w: Math.floor(width.value), h: Math.floor(height.value), pageSize: pageSize.value }))
-    // filter
-    const filterSelect = ref<SelectItem | null>(null)
-    const filter = computed(() => filterSelect.value?.value)
-    const onFilter = (selection: any) => filterSelect.value = selection
+
     // url query
-    const queryFilter = computed(() => filter.value ? `filter=department:${filter.value}` : '')
+    const queryFilter = computed(() => props.filter ? `filter=${props.filter.identifier}:${props.filter.value}` : '')
     const queryToken = computed(() => props.apiToken ? `token=${props.apiToken}` : '')
     const query = computed(() => [queryFilter.value, queryToken.value].filter(v => v).join('&'))
-    const url = computed(() => [`${props.apiUrl}/pMwkLFaq/fetch`, query.value].filter(v => v).join('?'))
+    const url = computed(() => [`${props.apiUrl}/${viewId.value}/fetch`, query.value].filter(v => v).join('?'))
     // fetch more list
     const { list, fetch, fetchMore, error } = useFetchMore<ShelfItem>(url, { pageSize })
-    watchOnce(and(isVisible, pageSize), () => fetch())
+    watchOnce(and(isVisible, pageSize, viewId), () => fetch())
 
     // slider
     const isReady = computed(() => isSliderReady.value && list.value.length > 0)
@@ -131,7 +130,7 @@ export default defineComponent({
     const countdown = ref(Number.MAX_VALUE)
     const trigger = ref(false)
     throttledWatch(vRange, (vr: ArrayRange) => {
-      countdown.value = vr.right - vr.length * 1.5
+      countdown.value = vr.right - Math.ceil(vr.length * 1.25)
     }, { throttle: 200, immediate: false })
     watch(countdown, (v) => {
       if (v <= 0 && list.value.length > 0)
@@ -145,15 +144,14 @@ export default defineComponent({
     }, { debounce: 500, immediate: false })
 
     return {
+      onView,
       target,
-      facets: facetToSelectItems(Facets.zhbFacets.facets[0]),
       isReady,
       list,
       onSliderReady,
       onRangeChanged,
       prevPage,
       nextPage,
-      onFilter,
       error,
     }
   },

@@ -54,7 +54,7 @@ export const useFetchMore = <T>(baseUrl: Ref<string>, options?: FetchMoreOptions
     }
     else {
       if (!canFetchMore.value)
-        log.warn(`cannot fetch more loaded=${list.value.length} total=${total.value}`)
+        log.warn(`loaded=${list.value.length} total=${total.value}`)
     }
   }
   return { fetchUrl: url, list, canFetch, canFetchMore, fetch, fetchMore, isFetching, error }

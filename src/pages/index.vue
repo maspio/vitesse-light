@@ -1,5 +1,5 @@
 <template>
-  <div class="m-1 lg:m-8 space-y-1 lg:space-y-8">
+  <div class="m-1 lg:m-8 space-y-20 lg:space-y-40">
     <page-section>
       <Row>
         <template #left>
@@ -7,25 +7,28 @@
             ZHB Bookslider
           </h1>
         </template>
-        <template #default>
-          <!-- <view-select view-types="collection" view-ids="81238727660005505,81238729470005505" @selected="onView"></view-select> -->
-          <view-select @selected="onView"></view-select>
-        </template>
         <template #right>
           <dark-toggle></dark-toggle>
         </template>
       </Row>
     </page-section>
-    <!-- <div style="height: 100vh"></div> -->
+    <!-- catalogue -->
     <page-section>
-      <ViewSlider title="Neuerwerbungen" view-types="collection" view-ids="81238727660005505,81238729470005505"></ViewSlider>
+      <catalogue-slider title="Neuerscheinungen"></catalogue-slider>
+    </page-section>
+    <!-- collection -->
+    <page-section>
+      <collection-slider title="Guck mal"></collection-slider>
+    </page-section>
+    <!-- bookslider -->
+    <page-section>
+      <bookslider title="Bookslider"></bookslider>
     </page-section>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue-demi'
-
 export default defineComponent({
   setup() {
     // eslint-disable-next-line no-console

@@ -11,7 +11,9 @@ declare module 'vue' {
     Card: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Card.vue')['default']
     CatalogueSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/CatalogueSlider.vue')['default']
     CollectionSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/CollectionSlider.vue')['default']
+    'CollectionSlider copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/CollectionSlider copy.vue')['default']
     DarkToggle: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/demo/DarkToggle.vue')['default']
+    FilterSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/FilterSelect.vue')['default']
     FixedRatio: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/FixedRatio.vue')['default']
     Image: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/image/Image.vue')['default']
     ImgBlur: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/image/ImgBlur.vue')['default']
@@ -30,6 +32,7 @@ declare module 'vue' {
     SliderSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderSelect.vue')['default']
     Snip: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Snip.vue')['default']
     ViewSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/ViewSelect.vue')['default']
+    'ViewSelect copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/ViewSelect copy.vue')['default']
     ViewSlider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/ViewSlider.vue')['default']
   }
 }
