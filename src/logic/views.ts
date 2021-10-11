@@ -14,7 +14,7 @@ export const useFetchViews = (props: FetchViewsProps) => {
   const types = computed(() => props.viewTypes ? `type=${props.viewTypes}` : '')
   const ids = computed(() => props.viewIds ? `ids=${props.viewIds}` : '')
   const query = computed(() => [types.value, ids.value].filter(v => v).join('&'))
-  const url = computed(() => [props.apiUrl, query.value].filter(v => v).join('?'))
+  const url = computed(() => [`${props.apiUrl}/views`, query.value].filter(v => v).join('?'))
   // fetch
   const { data } = useFetch<{views: View[]}>(url, {}, { refetch: true }).json()
   watch(data, (d) => {

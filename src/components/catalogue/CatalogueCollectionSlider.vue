@@ -6,7 +6,7 @@
     :api-url="apiUrl"
     :api-token="apiToken"
   >
-    <ViewSelect view-types="collection" :view-ids="vIds" @selected="onView"></ViewSelect>
+    <ViewSelect :api-url="apiUrl" view-types="collection" :view-ids="vIds" @selected="onView"></ViewSelect>
   </ViewSlider>
 </template>
 
@@ -21,8 +21,8 @@ export default defineComponent({
       required: false,
     },
     height: {
-      type: Number,
-      default: 300,
+      type: String,
+      required: false,
     },
     viewIds: {
       type: String,
@@ -30,7 +30,7 @@ export default defineComponent({
     },
     apiUrl: {
       type: String,
-      default: 'http://localhost/api/v1/views',
+      default: 'https://bookslider.zhbluzern.ch/api/v1',
     },
     apiToken: {
       type: String,

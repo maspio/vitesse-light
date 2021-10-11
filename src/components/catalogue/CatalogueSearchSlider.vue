@@ -23,8 +23,8 @@ export default defineComponent({
       required: false,
     },
     height: {
-      type: Number,
-      default: 300,
+      type: String,
+      required: false,
     },
     viewIds: {
       type: String,
@@ -32,7 +32,7 @@ export default defineComponent({
     },
     apiUrl: {
       type: String,
-      default: 'http://localhost/api/v1/views',
+      default: 'https://bookslider.zhbluzern.ch/api/v1',
     },
     apiToken: {
       type: String,

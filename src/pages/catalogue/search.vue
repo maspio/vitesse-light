@@ -1,6 +1,6 @@
 <template>
   <PageLayout>
-    <catalogue-search-slider title="Neuerscheinungen"></catalogue-search-slider>
+    <catalogue-search-slider :api-url="'http://localhost/api/v1'" title="Neuerscheinungen"></catalogue-search-slider>
   </PageLayout>
 </template>
 

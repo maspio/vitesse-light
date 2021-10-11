@@ -30,7 +30,7 @@ export default defineComponent({
     },
     apiUrl: {
       type: String,
-      default: 'http://localhost/api/views',
+      required: true,
     },
   },
   emits: ['selected'],

@@ -15,7 +15,7 @@
       </template>
     </SliderHeader>
     <!-- Slider -->
-    <div :style="`height: ${height}px; `">
+    <div :style="`height: ${vHeight}px; `">
       <div v-if="error" class="slider-center">
         {{ error }}
       </div>
@@ -26,7 +26,7 @@
         :classes="`slider transition-opacity ${
           isReady ? 'opacity-100' : 'opacity-0'
         }`"
-        :style="`height: ${height}px;`"
+        :style="`height: ${vHeight}px;`"
         @ready="onSliderReady"
         @visible-changed="onRangeChanged"
       >
@@ -34,7 +34,7 @@
           v-for="(item, index) in list"
           :key="`slider-panel-${index}`"
           v-slot="{ size }"
-          :length="height - 12"
+          :length="vHeight - 12"
           :ratio="item.image.ratio"
           :classes="`relative-full-size slider-panel`"
         >
@@ -58,6 +58,13 @@ import {
 } from '~/logic/index'
 import { ShelfItem, View, Filter } from '~/types'
 
+const toInt = (value: string | number | boolean | undefined, def: number): number => {
+  if (typeof value === 'undefined') return def
+  if (typeof value === 'string') return Number.parseInt(value)
+  if (typeof value === 'boolean') return value ? 1 : 0
+  return value
+}
+
 export default defineComponent({
   props: {
     title: {
@@ -65,8 +72,8 @@ export default defineComponent({
       required: false,
     },
     height: {
-      type: Number,
-      required: true,
+      type: [Number, String],
+      required: false,
     },
     view: {
       type: Object as PropType<View>,
@@ -82,11 +89,12 @@ export default defineComponent({
     },
     apiToken: {
       type: String,
-      default: '',
+      required: false,
     },
   },
   setup(props) {
     // views
+    const vHeight = computed(() => toInt(props.height, 300))
     const viewId = computed(() => props.view ? props.view.id : '')
     // eslint-disable-next-line no-console
     const onView = (v: any) => console.log('view selected', v)
@@ -109,7 +117,7 @@ export default defineComponent({
     const queryFilter = computed(() => props.filter ? `filter=${props.filter.identifier}:${props.filter.value}` : '')
     const queryToken = computed(() => props.apiToken ? `token=${props.apiToken}` : '')
     const query = computed(() => [queryFilter.value, queryToken.value].filter(v => v).join('&'))
-    const url = computed(() => [`${props.apiUrl}/${viewId.value}/fetch`, query.value].filter(v => v).join('?'))
+    const url = computed(() => [`${props.apiUrl}/views/${viewId.value}/fetch`, query.value].filter(v => v).join('?'))
     // fetch more list
     const { list, fetch, fetchMore, error } = useFetchMore<ShelfItem>(url, { pageSize })
     watchOnce(and(isVisible, pageSize, viewId), () => fetch())
@@ -145,6 +153,7 @@ export default defineComponent({
     }, { debounce: 500, immediate: false })
 
     return {
+      vHeight,
       onView,
       target,
       isReady,

@@ -1,6 +1,7 @@
 <template>
   <PageLayout>
-    <catalogue-collection-slider title="Guck mal"></catalogue-collection-slider>
+    <!-- view-ids="81238729470005505,81238727660005505" -->
+    <catalogue-collection-slider :api-url="'http://localhost/api/v1'" title="Guck mal" view-ids="81238729470005505,81238727660005505"></catalogue-collection-slider>
   </PageLayout>
 </template>
 

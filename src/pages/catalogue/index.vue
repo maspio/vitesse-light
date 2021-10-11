@@ -1,6 +1,7 @@
 <template>
   <PageLayout>
-    <catalogue-slider></catalogue-slider>
+    <!-- view-types="collection" -->
+    <catalogue-slider :api-url="'http://localhost/api/v1'"></catalogue-slider>
   </PageLayout>
 </template>
 
