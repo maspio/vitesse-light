@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch, PropType } from 'vue-demi'
-import { SelectItem } from '~/types'
-import { toJsonObect } from '~/utils'
+import { SelectItem } from '../../types'
+import { toJsonObect } from '../../utils'
 
 export default defineComponent({
   props: {

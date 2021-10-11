@@ -47,15 +47,15 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, computed, watch } from 'vue-demi'
 import { and, throttledWatch, debouncedWatch, useElementVisibility, useElementSize, watchOnce } from '@vueuse/core'
-import { logger } from '~/logic'
 import {
   SliderActions,
   ReadyHandler,
   useFetchMore,
   RangeChangeHandler,
   ArrayRange,
-} from '~/logic/index'
-import { ShelfItem, View, Filter } from '~/types'
+  logger
+} from '../../logic'
+import { ShelfItem, View, Filter } from '../../types'
 const log = logger('slider')
 
 const toInt = (value: string | number | boolean | undefined, def: number): number => {

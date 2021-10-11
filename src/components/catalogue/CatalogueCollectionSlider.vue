@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue-demi'
-import { View } from '~/types'
+import { View } from '../../types'
 
 export default defineComponent({
   props: {

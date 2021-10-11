@@ -1,9 +1,11 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
   },
   "css.lint.unknownAtRules": "ignore",
+  "vetur.format.enable": false,
   "typescript.format.enable": true,
   "typescript.format.semicolons": "remove",
   "javascript.preferences.quoteStyle": "single",
@@ -25,5 +27,4 @@
     "**/bower_components": true,
     "**/*.code-search": true
   },
-
 }

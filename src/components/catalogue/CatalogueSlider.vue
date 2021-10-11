@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue-demi'
-import { Filter, View } from '~/types'
+import { Filter, View } from '../../types'
 
 export default defineComponent({
   props: {

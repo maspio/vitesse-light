@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue-demi'
-import { ShelfItem } from '~/types'
+import { ShelfItem } from '../../types'
 
 export default defineComponent({
   props: {

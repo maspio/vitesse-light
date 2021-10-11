@@ -29,7 +29,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { useVModel } from "@vueuse/core";
-import type { SelectionItem } from "~/types";
+import type { SelectionItem } from '../../types';
 
 export default defineComponent({
   props: {

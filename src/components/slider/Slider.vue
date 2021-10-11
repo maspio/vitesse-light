@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue-demi'
 import Flicking from '@egjs/vue3-flicking'
-import { useSlider } from '~/logic/slider'
+import { useSlider } from '../../logic'
 
 /**
  * https://naver.github.io/egjs-flicking/docs/api/Flicking

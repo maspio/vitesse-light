@@ -4,8 +4,6 @@ export type SelectItem = {
   selected?: boolean
 }
 
-
-
 export interface SelectionItem<T> {
   value: T
   display: string

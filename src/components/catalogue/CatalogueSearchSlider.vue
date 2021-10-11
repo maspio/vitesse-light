@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue-demi'
-import { Filter } from '~/types'
+import { Filter } from '../../types'
 
 export default defineComponent({
   inheritAttrs: true,

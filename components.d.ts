@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Bookslider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/Bookslider.vue')['default']
     'Bookslider copy': typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/zhb/Bookslider copy.vue')['default']
+    'Carbon:checkmark': typeof import('~icons/carbon/checkmark')['default']
     CarbonMoon: typeof import('~icons/carbon/moon')['default']
     CarbonSun: typeof import('~icons/carbon/sun')['default']
     Card: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Card.vue')['default']
@@ -29,6 +30,9 @@ declare module 'vue' {
     PageLayout: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/demo/PageLayout.vue')['default']
     PageSection: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/demo/PageSection.vue')['default']
     Row: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Row.vue')['default']
+    SelectDemo: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/demo/SelectDemo.vue')['default']
+    SelectList: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/SelectList.vue')['default']
+    Settings: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/Settings.vue')['default']
     SingleSelect: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/misc/SingleSelect.vue')['default']
     Slider: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/Slider.vue')['default']
     SliderButton: typeof import('C:/Users/spech/Documents/masp-git/vitesse-light/src/components/slider/SliderButton.vue')['default']

@@ -12,10 +12,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from 'vue-demi'
-import { SelectItem, View } from '~/types'
-import { viewToSelectItem } from '~/utils'
-import { useFetchViews } from '~/logic'
-import { toJsonObect } from '~/utils'
+import { SelectItem, View } from '../../types'
+import { viewToSelectItem, toJsonObect } from '../../utils'
+import { useFetchViews } from '../../logic'
 
 export default defineComponent({
   props: {

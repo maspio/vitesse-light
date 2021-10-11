@@ -7,7 +7,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, watchEffect } from "vue";
-import type { SelectionItem } from "~/types";
+import type { SelectionItem } from '../../types';
 
 import { useStorage } from "@vueuse/core";
 

@@ -5,7 +5,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, PropType, watchEffect } from 'vue-demi'
 import { decode } from '@picibird/blurhash-ts'
-import { SizeWH, Size } from '~/utils'
+import { SizeWH, Size } from '../../utils'
 
 export default defineComponent({
   props: {

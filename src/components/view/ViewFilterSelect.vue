@@ -9,9 +9,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from 'vue-demi'
-import { useFetchViewFacets } from '~/logic'
-import { SelectItem } from '~/types'
-import { facetToSelectItems, selectItemToFacetEntry, facetEntryToFitler } from '~/utils'
+import { useFetchViewFacets } from '../../logic'
+import { SelectItem } from '../../types'
+import { facetToSelectItems, selectItemToFacetEntry, facetEntryToFitler } from '../../utils'
 
 export default defineComponent({
   props: {
