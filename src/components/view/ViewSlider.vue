@@ -36,7 +36,7 @@
           :ratio="item.image.ratio"
           :classes="`relative-full-size slider-panel`"
         >
-          <Image :image="item.image" :size="size"></Image>
+          <ImgPicBlur :image="item.image" :size="size"></ImgPicBlur>
           <ViewLink :item="item"></ViewLink>
         </FixedRatio>
       </Slider>
