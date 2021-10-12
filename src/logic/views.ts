@@ -1,6 +1,6 @@
 import { ref, computed, watch } from 'vue-demi'
 import { useFetch } from '@vueuse/core'
-import { Facet, View } from '~/types'
+import { Facet, View } from '../types'
 
 type FetchViewsProps = {
   viewTypes?: string

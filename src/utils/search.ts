@@ -1,4 +1,4 @@
-import { FacetEntry, Facet, Filter, SelectItem } from '~/types'
+import { FacetEntry, Facet, Filter, SelectItem } from '../types'
 
 export const facetEntryToSelectItem = (f: FacetEntry) => ({ text: f.label, value: f.id })
 
