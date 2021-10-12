@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed, watchEffect } from 'vue-demi'
+import { defineComponent, PropType, ref, computed, watch } from 'vue-demi'
 import { SizeWH, Size } from '../../utils'
 import { ImageSource } from '../../types'
 
@@ -42,15 +42,15 @@ export default defineComponent({
   emits: ['loaded'],
   setup(props, { emit }) {
     const target = ref<HTMLImageElement>()
-    let isLoaded = false
+    const loaded = ref(false)
     const styles = computed(() => Size.toCss(props.size))
     const onLoad = () => {
-      if (!isLoaded) {
+      if (!loaded.value) {
         emit('loaded')
-        isLoaded = true
+        loaded.value = true
       }
     }
-    const unwatch = watchEffect(() => {
+    const unwatch = watch(target, () => {
       if (target.value) {
         const complete = target.value.complete
         if (complete) onLoad()

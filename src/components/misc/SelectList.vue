@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType } from 'vue-demi';
 import { useVModel } from "@vueuse/core";
 import type { SelectionItem } from '../../types';
 

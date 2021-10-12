@@ -6,7 +6,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, watchEffect } from "vue";
+import { defineComponent } from 'vue-demi';
 import type { SelectionItem } from '../../types';
 
 import { useStorage } from "@vueuse/core";
@@ -24,7 +24,6 @@ export default defineComponent({
         value: 1,
       },
     ];
-    watchEffect(() => console.log('slideScale', slideScale.value))
     return { slideScale, items };
   },
 });

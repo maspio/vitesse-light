@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType, watchEffect } from 'vue-demi'
+import { defineComponent, ref, computed, PropType } from 'vue-demi'
+import {watchOnce} from '@vueuse/core'
 import { decode } from '@picibird/blurhash-ts'
 import { SizeWH, Size } from '../../utils'
 
@@ -26,9 +27,9 @@ export default defineComponent({
     const target = ref<HTMLCanvasElement>()
     const styles = computed(() => Size.toCss(props.size))
     const ctx = computed(() => target.value?.getContext('2d'))
-    const unwatch = watchEffect(() => {
-      if (!ctx.value) return
-      const ctx2d = ctx.value
+    const hasCtx = computed(() => !!ctx.value)
+    watchOnce(hasCtx, () => {
+      const ctx2d = ctx.value!
       const w = ctx2d.canvas.width
       const h = ctx2d.canvas.height
       if (!w || !h) return
@@ -37,7 +38,6 @@ export default defineComponent({
         const imageData = new ImageData(pixels, w, h)
         ctx2d.putImageData(imageData, 0, 0)
       }
-      unwatch()
     })
     return { target, styles }
   },
